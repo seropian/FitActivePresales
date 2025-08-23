@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --fa-orange: #F7931E;
+  --fa-orange-600: #E8770C;
+  --fa-dark: #111111;
+  --fa-gray: #1F2937;
+  --fa-light: #F8FAFC;
+  --fa-white: #FFFFFF;
+}
+
+html, body, #root {
+  height: 100%;
+  background: var(--fa-light);
+}
+
+/* Responsive typography improvements */
+@layer base {
+  html {
+    font-size: 16px;
+  }
+
+  @media (max-width: 640px) {
+    html {
+      font-size: 16px; /* Increased from 14px for better mobile readability */
+    }
+  }
+
+  @media (min-width: 1024px) {
+    html {
+      font-size: 17px; /* Slightly increased */
+    }
+  }
+
+  @media (min-width: 1280px) {
+    html {
+      font-size: 18px;
+    }
+  }
+}
+
+/* Improved touch targets for mobile */
+@layer components {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Better focus states for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2;
+  }
+
+  /* Smooth scrolling for anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Better text rendering */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+}
