@@ -121,8 +121,8 @@ else
     echo -e "${BLUE}Starting new PM2 process...${NC}"
     
     # Start with ecosystem config if available
-    if [ -f "config/ecosystem.config.js" ]; then
-        pm2 start config/ecosystem.config.js || {
+    if [ -f "config/ecosystem.config.cjs" ]; then
+        pm2 start config/ecosystem.config.cjs || {
             print_error "Failed to start PM2 process with ecosystem config"
             exit 1
         }

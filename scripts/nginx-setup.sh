@@ -436,7 +436,7 @@ EOF
 
 # Create PM2 ecosystem file for the backend
 echo -e "${YELLOW}⚙️  Creating PM2 configuration...${NC}"
-cat > $APP_DIR/config/ecosystem.config.js << 'EOF'
+cat > $APP_DIR/config/ecosystem.config.cjs << 'EOF'
 module.exports = {
   apps: [{
     name: 'fitactive-backend',
@@ -501,7 +501,7 @@ cd ../frontend && npm install && npm run build
 
 # Restart backend with PM2
 echo "🔄 Restarting backend..."
-pm2 restart fitactive-backend || pm2 start ../config/ecosystem.config.js
+pm2 restart fitactive-backend || pm2 start ../config/ecosystem.config.cjs
 
 # Reload nginx
 echo "🔄 Reloading nginx..."

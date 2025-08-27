@@ -109,7 +109,7 @@ deploy() {
     case $action in
         "start")
             print_status "Starting ${app_name}..."
-            pm2 start config/ecosystem.config.js --only $app_name --env $env
+            pm2 start config/ecosystem.config.cjs --only $app_name --env $env
             print_success "${app_name} started successfully"
             ;;
         "stop")
@@ -133,7 +133,7 @@ deploy() {
         "build")
             build_frontend $env
             print_status "Starting ${app_name} after build..."
-            pm2 start config/ecosystem.config.js --only $app_name --env $env
+            pm2 start config/ecosystem.config.cjs --only $app_name --env $env
             print_success "${app_name} started successfully after build"
             ;;
         *)

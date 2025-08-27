@@ -115,7 +115,7 @@ Comprehensive documentation is available in the [`docs/`](docs/) directory:
 
 **Configuration Files**: Deployment and server configuration files are organized as follows:
 - `config/` directory:
-  - `ecosystem.config.js` - PM2 process management configuration
+  - `ecosystem.config.cjs` - PM2 process management configuration
   - `nginx-*.conf` - Nginx server configurations
 - `scripts/` directory:
   - `deploy.sh` - Multi-environment deployment script
@@ -148,7 +148,7 @@ Update `NETOPIA_NOTIFY_URL` in `.env` with the ngrok URL.
 
 ```
 ├── config/                   # Configuration files
-│   ├── ecosystem.config.js  # PM2 configuration
+│   ├── ecosystem.config.cjs  # PM2 configuration
 │   └── nginx-*.conf         # Nginx configurations
 ├── scripts/                  # Utility scripts
 │   ├── deploy.sh            # Multi-environment deployment script

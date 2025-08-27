@@ -260,7 +260,7 @@ Nginx (Port 443/80)
 2. **Frontend Issues**: Verify Nginx with `sudo systemctl status nginx`
 3. **SSL Problems**: Check certificate with `sudo certbot certificates`
 4. **Database Issues**: Check SQLite file permissions and existence
-5. **PM2 Issues**: Restart PM2 daemon with `pm2 kill && pm2 start ecosystem.config.js`
+5. **PM2 Issues**: Restart PM2 daemon with `pm2 kill && pm2 start ecosystem.config.cjs`
 
 ## 📈 Next Steps
 

@@ -43,9 +43,9 @@ The application supports three environments:
 
 ```bash
 # Start specific environment
-pm2 start config/ecosystem.config.js --only fitactive-dev --env development
-pm2 start config/ecosystem.config.js --only fitactive-test --env test
-pm2 start config/ecosystem.config.js --only fitactive-prod --env production
+pm2 start config/ecosystem.config.cjs --only fitactive-dev --env development
+pm2 start config/ecosystem.config.cjs --only fitactive-test --env test
+pm2 start config/ecosystem.config.cjs --only fitactive-prod --env production
 
 # Restart with environment variables
 pm2 restart fitactive-dev --env development
@@ -137,7 +137,7 @@ pm2 list
 pm2 show fitactive-prod
 
 # Restart on file changes (development only)
-pm2 start config/ecosystem.config.js --only fitactive-dev --watch
+pm2 start config/ecosystem.config.cjs --only fitactive-dev --watch
 ```
 
 ### Log Files

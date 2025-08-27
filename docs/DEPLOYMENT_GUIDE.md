@@ -111,7 +111,7 @@ npm run build
 5. **Start the backend with PM2:**
 ```bash
 cd ..
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 pm2 save
 pm2 startup
 ```
@@ -294,7 +294,7 @@ certbot renew --dry-run
 # Current working directory structure (verified):
 /home/sero/apps/FitActivePresales/
 ├── config/
-│   ├── ecosystem.config.js # PM2 configuration
+│   ├── ecosystem.config.cjs # PM2 configuration
 │   └── nginx-*.conf       # Nginx configurations
 ├── scripts/
 │   ├── env-switch.js      # Environment switching

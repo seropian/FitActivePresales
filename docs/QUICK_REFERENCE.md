@@ -40,7 +40,7 @@ pm2 status
 
 # Start backend (if stopped)
 cd /home/sero/apps/FitActivePresales
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 
 # Stop backend
 pm2 stop fitactive-backend
