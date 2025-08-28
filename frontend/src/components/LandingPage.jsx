@@ -134,7 +134,7 @@ export function LandingPage({ spotsLeft, discount, ctaText }) {
                 {/* Left Column - Video */}
                 <div className="w-full">
                   <video
-                    className="w-full h-full rounded-3xl shadow-xl object-cover"
+                    className="w-full h-full rounded-3xl shadow-xl object-contain"
                     controls
                     autoPlay
                     muted
@@ -248,32 +248,38 @@ export function LandingPage({ spotsLeft, discount, ctaText }) {
                   </div>
                 </div>
 
-                {/* CTA Button */}
-                <div className="mb-5">
+              </div>
+              </div>
+            </div>
+
+            {/* CTA Button and Progress Bar - moved outside the grid */}
+            <div className="mt-6 space-y-4">
+              {/* CTA Button */}
+              <div className="flex justify-center">
+                <div className="w-full max-w-md">
                   <CTAButton size="large" fullWidth={true}>
                     Rezervă-ți locul acum
                   </CTAButton>
                 </div>
+              </div>
 
-                {/* Countdown and Stats */}
-                <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-1">
-                    <Lock className="w-4 h-4 text-white/60 flex-shrink-0" />
-                    <span className="text-white/70">Doar primii 100!</span>
-                  </div>
-                </div>
-
-                {/* Progress Bar */}
-                <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-white/70">{progressData.spotsLeft} abonamente rămase</span>
-                    <span className="text-white/70">{progressData.progressPercentage}% rezervate</span>
-                  </div>
-                  <div className="relative h-1.5 bg-white/20 rounded-full overflow-hidden">
-                    <div className="absolute left-0 top-0 h-full bg-[var(--fa-orange)] rounded-full" style={{ width: `${progressData.progressPercentage}%` }}></div>
-                  </div>
+              {/* Countdown and Stats */}
+              <div className="flex items-center justify-center text-xs">
+                <div className="flex items-center gap-1">
+                  <Lock className="w-4 h-4 text-white/60 flex-shrink-0" />
+                  <span className="text-white/70">Doar primii 100!</span>
                 </div>
               </div>
+
+              {/* Progress Bar */}
+              <div className="max-w-md mx-auto">
+                <div className="flex justify-between text-xs mb-1">
+                  <span className="text-white/70">{progressData.spotsLeft} abonamente rămase</span>
+                  <span className="text-white/70">{progressData.progressPercentage}% rezervate</span>
+                </div>
+                <div className="relative h-1.5 bg-white/20 rounded-full overflow-hidden">
+                  <div className="absolute left-0 top-0 h-full bg-[var(--fa-orange)] rounded-full" style={{ width: `${progressData.progressPercentage}%` }}></div>
+                </div>
               </div>
             </div>
           </div>
