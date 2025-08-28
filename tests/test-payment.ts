@@ -4,10 +4,46 @@
  * Test script for NETOPIA payment flow in development environment
  */
 
+interface OrderData {
+  orderID: string;
+  amount: number;
+  currency: string;
+  description: string;
+}
+
+interface BillingData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  details: string;
+  address: string;
+}
+
+interface TestPaymentData {
+  order: OrderData;
+  billing: BillingData;
+  company: null;
+}
+
+interface PaymentResponse {
+  redirectUrl?: string;
+  error?: string;
+  [key: string]: any;
+}
+
+interface HealthResponse {
+  status: string;
+  [key: string]: any;
+}
+
 const API_BASE = 'http://localhost:3001';
 
 // Test payment data
-const testPaymentData = {
+const testPaymentData: TestPaymentData = {
   order: {
     orderID: `TEST-${Date.now()}`,
     amount: 99.90,
@@ -28,9 +64,9 @@ const testPaymentData = {
   company: null
 };
 
-async function testPaymentFlow() {
+async function testPaymentFlow(): Promise<void> {
   console.log('🧪 Testing NETOPIA Payment Flow in Development Environment');
-  console.log('=' .repeat(60));
+  console.log('='.repeat(60));
   
   try {
     console.log('📋 Test Order Data:');
@@ -49,7 +85,7 @@ async function testPaymentFlow() {
       body: JSON.stringify(testPaymentData),
     });
 
-    const result = await response.json();
+    const result: PaymentResponse = await response.json();
     
     console.log('📊 Response Status:', response.status);
     console.log('📋 Response Data:', JSON.stringify(result, null, 2));
@@ -74,9 +110,10 @@ async function testPaymentFlow() {
     }
 
   } catch (error) {
-    console.error('❌ Test failed:', error.message);
+    const err = error as Error;
+    console.error('❌ Test failed:', err.message);
     
-    if (error.code === 'ECONNREFUSED') {
+    if ('code' in err && (err as any).code === 'ECONNREFUSED') {
       console.log('');
       console.log('💡 Make sure the development server is running:');
       console.log('   npm run dev');
@@ -85,10 +122,10 @@ async function testPaymentFlow() {
 }
 
 // Health check first
-async function healthCheck() {
+async function healthCheck(): Promise<boolean> {
   try {
     const response = await fetch(`${API_BASE}/health`);
-    const health = await response.json();
+    const health: HealthResponse = await response.json();
     console.log('🏥 Server Health:', health.status);
     return health.status === 'ok';
   } catch (error) {
@@ -97,7 +134,7 @@ async function healthCheck() {
   }
 }
 
-async function main() {
+async function main(): Promise<void> {
   console.log('🔍 Checking server health...');
   const isHealthy = await healthCheck();
   

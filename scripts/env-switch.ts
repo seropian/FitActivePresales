@@ -2,15 +2,27 @@
 
 /**
  * Environment Switcher Script
- * Usage: node scripts/env-switch.js [development|test|production]
+ * Usage: npx tsx scripts/env-switch.ts [development|test|production]
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+interface EnvironmentConfig {
+  file: string;
+  description: string;
+  port: number;
+  database: string;
+}
+
+type Environment = 'development' | 'test' | 'production';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const projectRoot = path.join(__dirname, '..');
 
-const environments = {
+const environments: Record<Environment, EnvironmentConfig> = {
   development: {
     file: '.env',
     description: 'Development environment (local development)',
@@ -31,11 +43,11 @@ const environments = {
   }
 };
 
-function showUsage() {
+function showUsage(): void {
   console.log('\n🌍 Environment Switcher');
   console.log('========================\n');
   
-  console.log('Usage: node scripts/env-switch.js [environment]\n');
+  console.log('Usage: npx tsx scripts/env-switch.ts [environment]\n');
   
   console.log('Available environments:');
   Object.entries(environments).forEach(([env, config]) => {
@@ -46,14 +58,14 @@ function showUsage() {
   });
   
   console.log('\nExamples:');
-  console.log('  node scripts/env-switch.js development');
-  console.log('  node scripts/env-switch.js test');
-  console.log('  node scripts/env-switch.js production');
+  console.log('  npx tsx scripts/env-switch.ts development');
+  console.log('  npx tsx scripts/env-switch.ts test');
+  console.log('  npx tsx scripts/env-switch.ts production');
   console.log('');
 }
 
-function switchEnvironment(targetEnv) {
-  if (!environments[targetEnv]) {
+function switchEnvironment(targetEnv: string): void {
+  if (!isValidEnvironment(targetEnv)) {
     console.error(`❌ Invalid environment: ${targetEnv}`);
     showUsage();
     process.exit(1);
@@ -83,7 +95,7 @@ function switchEnvironment(targetEnv) {
   console.log(`💡 Or use: NODE_ENV=${targetEnv} node server/server.js\n`);
 }
 
-function checkEnvironmentFiles() {
+function checkEnvironmentFiles(): void {
   console.log('\n📋 Environment Files Status:');
   console.log('============================\n');
   
@@ -106,6 +118,10 @@ function checkEnvironmentFiles() {
     }
   });
   console.log('');
+}
+
+function isValidEnvironment(env: string): env is Environment {
+  return env in environments;
 }
 
 // Main execution

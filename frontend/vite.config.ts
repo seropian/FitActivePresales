@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
+import { defineConfig, type UserConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ command, mode }): UserConfig => {
   const isDev = mode === 'development'
   const isTest = mode === 'test'
   const isProd = mode === 'production'
