@@ -1,5 +1,10 @@
 import dotenv from "dotenv";
 import path from "path";
+import { fileURLToPath } from "url";
+
+// Get the directory of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment-specific configuration
 const NODE_ENV = process.env.NODE_ENV || "development";
@@ -14,12 +19,15 @@ if (NODE_ENV === "production") {
   envFile = ".env"; // development uses .env
 }
 
+// Construct the full path to the .env file (relative to server directory)
+const envPath = path.resolve(__dirname, "..", envFile);
+
 // Load the environment file
-dotenv.config({ path: envFile });
+dotenv.config({ path: envPath });
 
 // Log which environment configuration is loaded
 console.log(`🌍 Environment: ${NODE_ENV}`);
-console.log(`📁 Config file: ${envFile}`);
+console.log(`📁 Config file: ${envPath}`);
 
 /**
  * Environment configuration helper
