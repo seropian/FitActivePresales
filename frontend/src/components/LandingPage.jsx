@@ -195,7 +195,7 @@ export function LandingPage({ spotsLeft, discount, ctaText }) {
                   {/* Membership fee */}
                   <div className="mb-4">
                     <span className="text-sm text-white/70">
-                      *Preţul include taxa de membru de 250 de lei, plătită o data in viață.
+                      *Preţul include taxa de membru de 250 de lei, plătită doar o data in viață.
                     </span>
                   </div>
                 </div>
