@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
 
 export default defineConfig(({ command, mode }) => {
   const isDev = mode === 'development'
@@ -11,6 +12,14 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins: [react()],
     mode: mode,
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+        '@/components': path.resolve(__dirname, './src/components'),
+        '@/utils': path.resolve(__dirname, './src/utils'),
+        '@/constants': path.resolve(__dirname, './src/constants')
+      }
+    },
     build: {
       minify: isProd ? 'esbuild' : false,
       sourcemap: isDev || isTest,

@@ -3,9 +3,10 @@ import { LandingPage } from "./components/LandingPage";
 import { CheckoutPage } from "./components/CheckoutPage";
 import { ThankYouPage } from "./components/ThankYouPage";
 import { useHashRoute } from "./utils/router";
+import type { PricingConfig } from "./types";
 
 // Pricing configuration
-const PRICING_CONFIG = {
+const PRICING_CONFIG: PricingConfig = {
   FULL_PRICE: 3098.80,
   SALE_PRICE: 1448.80,
   MONTHLY_PRICE: 99.90,
@@ -13,10 +14,8 @@ const PRICING_CONFIG = {
 
 /**
  * Format price for Romanian locale
- * @param {number} value - Price value to format
- * @returns {string} Formatted price string
  */
-function formatPrice(value) {
+function formatPrice(value: number): string {
   try {
     return value.toLocaleString("ro-RO", {
       minimumFractionDigits: 2,
@@ -27,9 +26,9 @@ function formatPrice(value) {
   }
 }
 
-export default function FitActivePresaleApp() {
+export default function FitActivePresaleApp(): JSX.Element {
   const { page, params } = useHashRoute();
-  const [spotsLeft] = useState(100);
+  const [spotsLeft] = useState<number>(100);
 
   const discount = useMemo(() =>
     Math.round((1 - PRICING_CONFIG.SALE_PRICE / PRICING_CONFIG.FULL_PRICE) * 100),

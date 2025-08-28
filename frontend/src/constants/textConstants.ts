@@ -13,7 +13,7 @@ export const BRAND = {
   experience: "18 ani experiență",
   clubsOpened: "peste 150 cluburi deschise",
   satisfiedClients: "Mii de clienți mulțumiți"
-};
+} as const;
 
 // Contact Information
 export const CONTACT = {
@@ -22,7 +22,7 @@ export const CONTACT = {
   supportEmail: "mailto:vitan@fitactive.ro",
   phone: "0758987111",
   phoneHref: "tel:+40758987111"
-};
+} as const;
 
 // Main Headings and Titles
 export const HEADINGS = {
@@ -40,7 +40,7 @@ export const HEADINGS = {
   thankYou: "Mulțumim! Procesăm plata ta…",
   billingInfo: "Date de facturare",
   orderSummary: "Rezumat comandă"
-};
+} as const;
 
 // CTA (Call to Action) Texts
 export const CTA = {
@@ -53,7 +53,7 @@ export const CTA = {
   backToOffer: "Înapoi la ofertă",
   retryPayment: "Reîncearcă plata",
   backHome: "Înapoi acasă"
-};
+} as const;
 
 // Pricing and Offers
 export const PRICING = {
@@ -69,7 +69,7 @@ export const PRICING = {
   total: "Total",
   spotsRemaining: "{count} abonamente rămase",
   percentageReserved: "{percentage}% rezervate"
-};
+} as const;
 
 // Features and Benefits
 export const FEATURES = {
@@ -92,7 +92,7 @@ export const FEATURES = {
   solarVibration: "Solar nelimitat & platformă vibrantă – pentru un look impecabil, corp tonifiat și reducerea celulitei.",
   relaxationGenerous: "Spațiu de relaxare generos – unde te bucuri de o băutură rece și de prieteni, după antrenament.",
   everythingNeeded: "– tot ce ai nevoie ca să arăți și să te simți excelent."
-};
+} as const;
 
 // Pro-Pack Features
 export const PRO_PACK = {
@@ -103,7 +103,7 @@ export const PRO_PACK = {
   bodyAnalysis: "Analiză detaliată a compoziției corporale – descoperă exact raportul dintre masă musculară, grăsime și hidratare, ca să ai un punct de plecare clar și obiectiv.",
   trainingPlan: "Plan de antrenament recomandat de un specialist – o strategie de exerciții creată pentru tine, care să te ajute să obții rezultate mai rapide și mai vizibile.",
   note: "*Pro-Pack nu va mai fi disponibil gratuit după lansare."
-};
+} as const;
 
 // Guarantees
 export const GUARANTEES = {
@@ -124,7 +124,7 @@ export const GUARANTEES = {
     description: "Mii de clienți mulțumiți, peste 150 cluburi deschise."
   },
   subscriptionNote: "Abonamentul începe la data deschiderii sălii — nu pierzi nimic până atunci."
-};
+} as const;
 
 // FAQ Content
 export const FAQ = {
@@ -143,7 +143,7 @@ export const FAQ = {
   limitedOfferAnswer: "Da, doar primele 100 de locuri beneficiază de prețul redus și Pro-Pack-ul inclus gratuit.",
   lastChanceTitle: "Ultima șansă – nu rata",
   lastChanceDescription: "Ești la un click distanță de cel mai bun preț pe care îl vei avea vreodată la FitActive București, plus Pro-Pack cadou."
-};
+} as const;
 
 // Form Labels and Placeholders
 export const FORM = {
@@ -154,7 +154,7 @@ export const FORM = {
   billingAddress: "Adresă facturare",
   agreeTerms: "Sunt de acord cu termenii, politica de confidențialitate și prelucrarea datelor pentru emiterea facturii.",
   autoInvoiceNotice: "Factura se emite automat după confirmarea tranzacției"
-};
+} as const;
 
 // Status Messages
 export const STATUS = {
@@ -166,7 +166,7 @@ export const STATUS = {
   paymentFailedMessage: "Încearcă din nou sau contactează-ne.",
   loadingOrder: "Se încarcă informațiile comenzii...",
   orderLabel: "Comanda:"
-};
+} as const;
 
 // Countdown and Time
 export const COUNTDOWN = {
@@ -175,14 +175,14 @@ export const COUNTDOWN = {
   hours: "ore",
   minutes: "min",
   seconds: "sec"
-};
+} as const;
 
 // Security and Trust
 export const SECURITY = {
   securePayment: "Plată securizată prin Netopia mobilPay",
   importantNotes: "Note importante",
   afterPaymentNote: "După plată, vei primi email cu confirmarea, contractul și factura fiscală (SmartBill)."
-};
+} as const;
 
 // Navigation and Footer
 export const NAVIGATION = {
@@ -198,14 +198,14 @@ export const NAVIGATION = {
   termsConditions: "Termeni & Condiții",
   privacyPolicy: "Politica de confidențialitate",
   cookiePolicy: "Politica cookie"
-};
+} as const;
 
 // Copyright and Legal
 export const LEGAL = {
   copyright: "© {year} FitActive. Toate drepturile rezervate.",
   copyrightShort: "© {year} FitActive",
   support: "Suport: suport@fitactive.ro"
-};
+} as const;
 
 // Miscellaneous
 export const MISC = {
@@ -213,4 +213,4 @@ export const MISC = {
   strong: "pe bune",
   videoAlt: "Your browser does not support the video tag.",
   logoAlt: "FitActive Logo"
-};
+} as const;

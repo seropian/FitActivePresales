@@ -1,13 +1,14 @@
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+// Types are used in comments and configuration objects
 
 // Get the directory of the current module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load environment-specific configuration
-const NODE_ENV = process.env.NODE_ENV || "development";
+const NODE_ENV: string = process.env.NODE_ENV || "development";
 
 // Load the appropriate .env file based on NODE_ENV
 let envFile = ".env";
@@ -31,23 +32,20 @@ console.log(`📁 Config file: ${envPath}`);
 
 /**
  * Environment configuration helper
- * @param {string} key - Environment variable key
- * @param {string} defaultValue - Default value if key is not found
- * @returns {string} Environment variable value or default
  */
-export const env = (key, defaultValue = "") => process.env[key] ?? defaultValue;
+export const env = (key: string, defaultValue: string = ""): string => process.env[key] ?? defaultValue;
 
 /**
  * Environment detection helpers
  */
-export const isDevelopment = () => NODE_ENV === "development";
-export const isTest = () => NODE_ENV === "test";
-export const isProduction = () => NODE_ENV === "production";
+export const isDevelopment = (): boolean => NODE_ENV === "development";
+export const isTest = (): boolean => NODE_ENV === "test";
+export const isProduction = (): boolean => NODE_ENV === "production";
 
 /**
  * Get current environment
  */
-export const getEnvironment = () => NODE_ENV;
+export const getEnvironment = (): string => NODE_ENV;
 
 /**
  * Validate required environment variables
@@ -85,7 +83,7 @@ export const APP_CONFIG = {
   BASE_URL: env("APP_BASE_URL", "http://localhost:5173"),
   PORT: env("PORT", "3001"),
   NODE_ENV: NODE_ENV,
-};
+} as const;
 
 // Database Configuration
 export const DATABASE_CONFIG = {
@@ -94,14 +92,14 @@ export const DATABASE_CONFIG = {
     isProduction() ? "./production.sqlite" :
     "./data.sqlite"
   ),
-};
+} as const;
 
 // Test Configuration
 export const TEST_CONFIG = {
   DISABLE_PAYMENTS: env("DISABLE_PAYMENTS", "false") === "true",
   USE_MOCK_SERVICES: env("USE_MOCK_SERVICES", "false") === "true",
   DEBUG_MODE: env("DEBUG_MODE", "false") === "true",
-};
+} as const;
 
 // SMTP Configuration
 export const SMTP_CONFIG = {
@@ -110,4 +108,4 @@ export const SMTP_CONFIG = {
   USER: env("SMTP_USER"),
   PASS: env("SMTP_PASS"),
   FROM: env("MAIL_FROM", "no-reply@fitactive.ro"),
-};
+} as const;

@@ -1,22 +1,24 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { netopiaService } from "../services/netopiaService.js";
 import { upsertOrder } from "../database/db.js";
 import { handleApprovedPayment } from "../utils/paymentHandler.js";
 import { logger } from "../utils/logger.js";
 import { validateOrder, validateBilling, validateCompany } from "../utils/validation.js";
+import type { PaymentRequest, PaymentResponse, AuthenticatedRequest } from "../types/index.js";
 
 const router = express.Router();
 
 /**
  * Middleware to validate request body exists
  */
-const validateRequestBody = (req, res, next) => {
+const validateRequestBody = (req: Request, res: Response, next: NextFunction): void => {
   if (!req.body || Object.keys(req.body).length === 0) {
     logger.warn('Empty request body received');
-    return res.status(400).json({
+    res.status(400).json({
       message: "Request body is required",
       error: "Empty or missing request body"
     });
+    return;
   }
   next();
 };
@@ -24,7 +26,7 @@ const validateRequestBody = (req, res, next) => {
 /**
  * Start NETOPIA payment
  */
-router.post("/start", validateRequestBody, async (req, res) => {
+router.post("/start", validateRequestBody, async (req: Request<{}, PaymentResponse, PaymentRequest>, res: Response<PaymentResponse>) => {
   const startTime = Date.now();
 
   try {
@@ -36,10 +38,12 @@ router.post("/start", validateRequestBody, async (req, res) => {
         hasOrder: !!order,
         hasBilling: !!billing
       });
-      return res.status(400).json({
+      res.status(400).json({
+        success: false,
         message: "Missing required fields",
         error: "Order and billing information are required"
       });
+      return;
     }
 
     logger.info('Payment start request received', {
@@ -52,30 +56,36 @@ router.post("/start", validateRequestBody, async (req, res) => {
     const orderValidation = validateOrder(order);
     if (!orderValidation.isValid) {
       logger.warn('Invalid order data', { errors: orderValidation.errors });
-      return res.status(400).json({
+      res.status(400).json({
+        success: false,
         message: "Invalid order data",
-        errors: orderValidation.errors
+        error: orderValidation.errors.map((e: any) => e.message).join(', ')
       });
+      return;
     }
 
     // Validate billing data
     const billingValidation = validateBilling(billing);
     if (!billingValidation.isValid) {
       logger.warn('Invalid billing data', { errors: billingValidation.errors });
-      return res.status(400).json({
+      res.status(400).json({
+        success: false,
         message: "Invalid billing data",
-        errors: billingValidation.errors
+        error: billingValidation.errors.map((e: any) => e.message).join(', ')
       });
+      return;
     }
 
     // Validate company data (optional)
     const companyValidation = validateCompany(company);
     if (!companyValidation.isValid) {
       logger.warn('Invalid company data', { errors: companyValidation.errors });
-      return res.status(400).json({
+      res.status(400).json({
+        success: false,
         message: "Invalid company data",
-        errors: companyValidation.errors
+        error: companyValidation.errors.map((e: any) => e.message).join(', ')
       });
+      return;
     }
 
     // Save order to database
@@ -91,7 +101,7 @@ router.post("/start", validateRequestBody, async (req, res) => {
     logger.info('Order saved to database', { orderID: order.orderID });
 
     // Start payment with NETOPIA
-    const paymentData = await netopiaService.startPayment({ order, billing, company });
+    const paymentData = await netopiaService.startPayment({ order, billing, company: company || null });
 
     // Handle different response scenarios
     if (paymentData?.customerAction?.url) {
@@ -100,10 +110,11 @@ router.post("/start", validateRequestBody, async (req, res) => {
         redirectUrl: paymentData.customerAction.url
       });
 
-      return res.json({
-        redirectUrl: paymentData.customerAction.url,
-        orderID: order.orderID
+      res.json({
+        success: true,
+        redirectUrl: paymentData.customerAction.url
       });
+      return;
     }
 
     // Handle NETOPIA API v2 response with paymentURL
@@ -114,20 +125,21 @@ router.post("/start", validateRequestBody, async (req, res) => {
         redirectUrl: paymentData.payment.paymentURL
       });
 
-      return res.json({
-        redirectUrl: paymentData.payment.paymentURL,
-        orderID: order.orderID
+      res.json({
+        success: true,
+        redirectUrl: paymentData.payment.paymentURL
       });
+      return;
     }
 
     if (paymentData?.payment?.status === 3 &&
         (paymentData?.error?.code === "00" || paymentData?.error?.message === "Approved")) {
       logger.info('Payment immediately approved', { orderID: order.orderID });
       await handleApprovedPayment(order.orderID);
-      return res.json({
-        success: true,
-        orderID: order.orderID
+      res.json({
+        success: true
       });
+      return;
     }
 
     logger.warn('Payment could not be initiated', {
@@ -135,12 +147,13 @@ router.post("/start", validateRequestBody, async (req, res) => {
       paymentData
     });
 
-    return res.status(400).json({
+    res.status(400).json({
+      success: false,
       message: "Payment could not be initiated",
-      data: paymentData
+      error: "Unable to generate payment URL"
     });
 
-  } catch (error) {
+  } catch (error: any) {
     const duration = Date.now() - startTime;
     logger.error("Payment start error", {
       error: error.message,
@@ -149,8 +162,10 @@ router.post("/start", validateRequestBody, async (req, res) => {
       orderID: req.body?.order?.orderID
     });
 
-    return res.status(500).json({
-      message: "Failed to start payment"
+    res.status(500).json({
+      success: false,
+      message: "Failed to start payment",
+      error: "Internal server error"
     });
   }
 });
@@ -158,33 +173,34 @@ router.post("/start", validateRequestBody, async (req, res) => {
 /**
  * Handle NETOPIA IPN (Instant Payment Notification)
  */
-router.post("/ipn", express.text({ type: "*/*" }), async (req, res) => {
+router.post("/ipn", express.text({ type: "*/*" }), async (req: AuthenticatedRequest, res: Response) => {
   try {
     const ipnData = await netopiaService.verifyIPN(req.body);
     const { order, payment } = ipnData || {};
-    const orderID = order?.orderID;
+    const orderID: string | undefined = order?.orderID;
 
     if (!orderID) {
       console.warn("IPN received without orderID");
-      return res.status(200).send("OK");
+      res.status(200).send("OK");
+      return;
     }
 
     // Handle approved payment
     if (payment?.status === 3) {
       await handleApprovedPayment(orderID);
       console.log(`Payment approved for order: ${orderID}`);
-    } 
+    }
     // Handle failed payment
     else if (payment?.status === 2) {
       await upsertOrder({ orderID, status: "failed" });
       console.log(`Payment failed for order: ${orderID}`);
     }
 
-    return res.status(200).send("OK");
-  } catch (error) {
+    res.status(200).send("OK");
+  } catch (error: any) {
     console.error("IPN processing error:", error.message);
     // Always return OK to NETOPIA to avoid retries
-    return res.status(200).send("OK");
+    res.status(200).send("OK");
   }
 });
 

@@ -5,10 +5,10 @@ import { emailService } from "../services/emailService.js";
 /**
  * Handle approved payment - create invoice and send email
  */
-export async function handleApprovedPayment(orderID) {
+export async function handleApprovedPayment(orderID: string): Promise<void> {
   try {
     const order = await getOrder(orderID);
-    
+
     if (!order) {
       console.error(`Order not found: ${orderID}`);
       return;
@@ -21,7 +21,7 @@ export async function handleApprovedPayment(orderID) {
     }
 
     // Update order status to approved
-    await upsertOrder({ orderID, status: "approved" });
+    await upsertOrder({ orderID, status: "confirmed" });
 
     const billing = JSON.parse(order.billing || "{}");
     const company = JSON.parse(order.company || "null");
@@ -40,11 +40,11 @@ export async function handleApprovedPayment(orderID) {
     }
 
     // Download PDF if available
-    let pdfBuffer = null;
+    let pdfBuffer: Buffer | null = null;
     if (pdfLink) {
       try {
         pdfBuffer = await smartBillService.downloadInvoicePDF(pdfLink);
-      } catch (error) {
+      } catch (error: any) {
         console.error("Failed to download PDF:", error.message);
       }
     }
@@ -55,9 +55,9 @@ export async function handleApprovedPayment(orderID) {
         to: billing.email,
         series,
         number,
-        pdfBuffer,
+        pdfBuffer: pdfBuffer ?? undefined,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to send invoice email:", error.message);
     }
 
@@ -65,18 +65,18 @@ export async function handleApprovedPayment(orderID) {
     await updateOrderInvoice(orderID, {
       series,
       number,
-      pdfLink: pdfLink || null,
+      pdfLink: pdfLink || undefined,
     });
 
     console.log(`Payment processed successfully for order: ${orderID}, invoice: ${series}-${number}`);
 
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Failed to handle approved payment for order ${orderID}:`, error.message);
-    
+
     // Update order status to indicate processing error
     try {
       await upsertOrder({ orderID, status: "processing_error" });
-    } catch (dbError) {
+    } catch (dbError: any) {
       console.error("Failed to update order status:", dbError.message);
     }
   }

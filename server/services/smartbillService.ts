@@ -1,10 +1,19 @@
 import axios from "axios";
 import { SMARTBILL_CONFIG } from "../config/environment.js";
+import type { OrderRecord } from "../types/index.js";
+
+interface CreateInvoiceParams {
+  orderData: OrderRecord;
+  billing: any;
+  company?: any;
+}
 
 /**
  * SmartBill invoice service
  */
 class SmartBillService {
+  private authHeader: { Authorization: string };
+
   constructor() {
     this.authHeader = this.createAuthHeader();
   }
@@ -12,7 +21,7 @@ class SmartBillService {
   /**
    * Create authorization header for SmartBill API
    */
-  createAuthHeader() {
+  private createAuthHeader(): { Authorization: string } {
     const credentials = Buffer.from(`${SMARTBILL_CONFIG.EMAIL}:${SMARTBILL_CONFIG.TOKEN}`).toString("base64");
     return {
       Authorization: `Basic ${credentials}`,
@@ -22,7 +31,7 @@ class SmartBillService {
   /**
    * Create an invoice in SmartBill
    */
-  async createInvoice({ orderData, billing, company }) {
+  async createInvoice({ orderData, billing, company }: CreateInvoiceParams): Promise<any> {
     try {
       const invoiceData = {
         companyVatCode: SMARTBILL_CONFIG.VATCODE,
@@ -68,7 +77,7 @@ class SmartBillService {
       );
 
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("SmartBill invoice creation failed:", error?.response?.data || error.message);
       throw new Error("Failed to create invoice");
     }
@@ -77,7 +86,7 @@ class SmartBillService {
   /**
    * Download invoice PDF
    */
-  async downloadInvoicePDF(pdfLink) {
+  async downloadInvoicePDF(pdfLink: string): Promise<Buffer> {
     try {
       if (!pdfLink) {
         throw new Error("No PDF link provided");
@@ -89,7 +98,7 @@ class SmartBillService {
       });
 
       return Buffer.from(response.data);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to download invoice PDF:", error.message);
       throw error;
     }

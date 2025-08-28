@@ -1,15 +1,16 @@
 import sqlite3 from "sqlite3";
-import { open } from "sqlite";
+import { open, Database } from "sqlite";
 import { DATABASE_CONFIG, getEnvironment } from "../config/environment.js";
+import type { OrderRecord } from "../types/index.js";
 
-let db;
+let db: Database | null = null;
 
 /**
  * Initialize the SQLite database
  */
-export async function initDB() {
+export async function initDB(): Promise<void> {
   try {
-    const dbPath = DATABASE_CONFIG.PATH;
+    const dbPath: string = DATABASE_CONFIG.PATH;
     console.log(`📊 Database: ${dbPath} (${getEnvironment()})`);
 
     db = await open({
@@ -44,7 +45,7 @@ export async function initDB() {
 /**
  * Get database instance
  */
-export function getDB() {
+export function getDB(): Database {
   if (!db) {
     throw new Error("Database not initialized. Call initDB() first.");
   }
@@ -54,7 +55,7 @@ export function getDB() {
 /**
  * Insert or update an order record
  */
-export async function upsertOrder(orderData) {
+export async function upsertOrder(orderData: Partial<OrderRecord>): Promise<void> {
   const database = getDB();
   const now = new Date().toISOString();
   
@@ -89,7 +90,7 @@ export async function upsertOrder(orderData) {
 /**
  * Get an order by orderID
  */
-export async function getOrder(orderID) {
+export async function getOrder(orderID: string): Promise<OrderRecord | undefined> {
   const database = getDB();
   return database.get(`SELECT * FROM orders WHERE orderID=?`, orderID);
 }
@@ -97,12 +98,16 @@ export async function getOrder(orderID) {
 /**
  * Update order invoice information
  */
-export async function updateOrderInvoice(orderID, invoiceData) {
+export async function updateOrderInvoice(orderID: string, invoiceData: {
+  series?: string;
+  number?: string;
+  pdfLink?: string;
+}): Promise<void> {
   const database = getDB();
   const now = new Date().toISOString();
-  
+
   await database.run(
-    `UPDATE orders SET invoiceSeries=?, invoiceNumber=?, pdfLink=?, updatedAt=? 
+    `UPDATE orders SET invoiceSeries=?, invoiceNumber=?, pdfLink=?, updatedAt=?
      WHERE orderID=?`,
     invoiceData.series,
     invoiceData.number,

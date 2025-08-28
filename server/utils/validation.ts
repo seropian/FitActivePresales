@@ -2,12 +2,12 @@
  * Validation utilities for request data
  */
 
+import type { ValidationResult, ValidationError } from "../types/index.js";
+
 /**
  * Validate email format
- * @param {string} email - Email to validate
- * @returns {boolean} True if valid email format
  */
-export function isValidEmail(email) {
+export function isValidEmail(email: string): boolean {
   if (!email || typeof email !== 'string') return false;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -15,10 +15,8 @@ export function isValidEmail(email) {
 
 /**
  * Validate phone number (Romanian format)
- * @param {string} phone - Phone number to validate
- * @returns {boolean} True if valid phone format
  */
-export function isValidPhone(phone) {
+export function isValidPhone(phone: string): boolean {
   if (!phone || typeof phone !== 'string') return false;
   // Romanian phone number patterns
   const phoneRegex = /^(\+40|0040|0)[2-9]\d{8}$/;
@@ -27,27 +25,25 @@ export function isValidPhone(phone) {
 
 /**
  * Validate order data
- * @param {Object} order - Order object to validate
- * @returns {Object} Validation result with isValid and errors
  */
-export function validateOrder(order) {
-  const errors = [];
+export function validateOrder(order: any): ValidationResult {
+  const errors: ValidationError[] = [];
 
   if (!order) {
-    errors.push('Order data is required');
+    errors.push({ field: 'order', message: 'Order data is required' });
     return { isValid: false, errors };
   }
 
   if (!order.orderID || typeof order.orderID !== 'string') {
-    errors.push('Order ID is required and must be a string');
+    errors.push({ field: 'orderID', message: 'Order ID is required and must be a string' });
   }
 
   if (!order.amount || typeof order.amount !== 'number' || order.amount <= 0) {
-    errors.push('Amount is required and must be a positive number');
+    errors.push({ field: 'amount', message: 'Amount is required and must be a positive number' });
   }
 
   if (order.currency && typeof order.currency !== 'string') {
-    errors.push('Currency must be a string');
+    errors.push({ field: 'currency', message: 'Currency must be a string' });
   }
 
   return {
@@ -58,35 +54,33 @@ export function validateOrder(order) {
 
 /**
  * Validate billing data
- * @param {Object} billing - Billing object to validate
- * @returns {Object} Validation result with isValid and errors
  */
-export function validateBilling(billing) {
-  const errors = [];
+export function validateBilling(billing: any): ValidationResult {
+  const errors: ValidationError[] = [];
 
   if (!billing) {
-    errors.push('Billing data is required');
+    errors.push({ field: 'billing', message: 'Billing data is required' });
     return { isValid: false, errors };
   }
 
   if (!billing.email || !isValidEmail(billing.email)) {
-    errors.push('Valid email is required');
+    errors.push({ field: 'email', message: 'Valid email is required' });
   }
 
   if (!billing.firstName || typeof billing.firstName !== 'string') {
-    errors.push('First name is required');
+    errors.push({ field: 'firstName', message: 'First name is required' });
   }
 
   if (!billing.lastName || typeof billing.lastName !== 'string') {
-    errors.push('Last name is required');
+    errors.push({ field: 'lastName', message: 'Last name is required' });
   }
 
   if (!billing.city || typeof billing.city !== 'string') {
-    errors.push('City is required');
+    errors.push({ field: 'city', message: 'City is required' });
   }
 
   if (billing.phone && !isValidPhone(billing.phone)) {
-    errors.push('Invalid phone number format');
+    errors.push({ field: 'phone', message: 'Invalid phone number format' });
   }
 
   return {
@@ -97,26 +91,24 @@ export function validateBilling(billing) {
 
 /**
  * Validate company data (optional)
- * @param {Object} company - Company object to validate
- * @returns {Object} Validation result with isValid and errors
  */
-export function validateCompany(company) {
-  const errors = [];
+export function validateCompany(company: any): ValidationResult {
+  const errors: ValidationError[] = [];
 
   if (!company) {
     return { isValid: true, errors }; // Company data is optional
   }
 
   if (company.name && typeof company.name !== 'string') {
-    errors.push('Company name must be a string');
+    errors.push({ field: 'name', message: 'Company name must be a string' });
   }
 
   if (company.vatCode && typeof company.vatCode !== 'string') {
-    errors.push('VAT code must be a string');
+    errors.push({ field: 'vatCode', message: 'VAT code must be a string' });
   }
 
   if (company.regCom && typeof company.regCom !== 'string') {
-    errors.push('Registration number must be a string');
+    errors.push({ field: 'regCom', message: 'Registration number must be a string' });
   }
 
   return {

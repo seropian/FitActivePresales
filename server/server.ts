@@ -1,29 +1,31 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { initDB } from "./database/db.js";
-import { APP_CONFIG, NETOPIA_CONFIG, validateEnvironment } from "./config/environment.js";
+import { APP_CONFIG, NETOPIA_CONFIG } from "./config/environment.js";
 import netopiRoutes from "./routes/netopia.js";
 import orderRoutes from "./routes/orders.js";
+import type { HealthCheckResponse, AuthenticatedRequest } from "./types/index.js";
 
 const app = express();
 
 // Middleware
 app.use(express.json({
   limit: "1mb",
-  verify: (req, res, buf, encoding) => {
+  verify: (req: AuthenticatedRequest, _res: Response, buf: Buffer, _encoding: string) => {
     // Store raw body for IPN verification
     req.rawBody = buf;
   }
 }));
 
 // JSON error handling middleware
-app.use((error, req, res, next) => {
-  if (error instanceof SyntaxError && error.status === 400 && 'body' in error) {
+app.use((error: any, _req: Request, res: Response, next: NextFunction) => {
+  if (error instanceof SyntaxError && (error as any).status === 400 && 'body' in error) {
     console.error('Bad JSON:', error.message);
-    return res.status(400).json({
+    res.status(400).json({
       message: 'Invalid JSON format',
       error: 'Request body contains malformed JSON'
     });
+    return;
   }
   next(error);
 });
@@ -38,16 +40,19 @@ app.use("/api/netopia", netopiRoutes);
 app.use("/api/order", orderRoutes);
 
 // Health check endpoint
-app.get("/health", (req, res) => {
-  res.json({
+app.get("/health", (_req: Request, res: Response) => {
+  const healthResponse: HealthCheckResponse = {
     status: "ok",
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || "development"
-  });
+    environment: process.env.NODE_ENV || "development",
+    uptime: process.uptime(),
+    memory: process.memoryUsage()
+  };
+  res.json(healthResponse);
 });
 
 // Initialize database and start server
-async function startServer() {
+async function startServer(): Promise<void> {
   try {
     // Validate critical environment variables
     console.log("🔍 Validating environment configuration...");
@@ -66,7 +71,7 @@ async function startServer() {
     console.log("✅ Database initialized successfully");
 
     // Start server
-    const PORT = APP_CONFIG.PORT;
+    const PORT = Number(APP_CONFIG.PORT);
     app.listen(PORT, () => {
       console.log(`🚀 FitActive API server running on port ${PORT}`);
       console.log(`📊 Environment: ${process.env.NODE_ENV || "development"}`);
