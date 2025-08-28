@@ -2,6 +2,16 @@
 
 A complete presales application for FitActive gym with payment processing, invoice generation, and email notifications.
 
+## 🎉 **LIVE DEPLOYMENT STATUS**
+
+**✅ FULLY OPERATIONAL** - Last Updated: August 28, 2025
+
+- **🌐 Live URL**: [https://presale.fitactive.open-sky.org](https://presale.fitactive.open-sky.org)
+- **💳 Payment System**: ✅ Working (NETOPIA Sandbox)
+- **📧 Email Notifications**: ✅ Configured
+- **🧾 Invoice Generation**: ✅ SmartBill Integration
+- **🔒 SSL Certificate**: ✅ Valid (Let's Encrypt)
+
 ## 🏗️ Architecture
 
 - **Frontend**: React + Vite + Tailwind CSS
@@ -156,6 +166,12 @@ Update `NETOPIA_NOTIFY_URL` in `.env` with the ngrok URL.
 │   ├── env-switch.js        # Environment switching script
 │   ├── nginx-setup.sh       # Nginx setup script
 │   └── verify-setup.sh      # Setup verification script
+├── tests/                    # Testing suite
+│   ├── test-payment.js      # Development payment flow tests
+│   ├── test-payment-flow.js # Comprehensive payment testing
+│   ├── test-payment-public.js # Production server tests
+│   ├── test-frontend-flow.js # Frontend integration tests
+│   └── README.md            # Testing documentation
 ├── frontend/                 # React frontend
 │   ├── src/
 │   │   ├── components/      # React components
@@ -342,6 +358,23 @@ npm run build
 - `npm run dev` - Development server
 - `npm run build` - Production build
 - `npm run preview` - Preview production build
+
+## 🔧 Recent Updates
+
+### Payment System Fixes (August 28, 2025)
+- ✅ **Fixed NETOPIA Integration**: Resolved server crashes during payment processing
+- ✅ **Enhanced Error Handling**: Comprehensive logging and error recovery
+- ✅ **Improved Stability**: Better axios configuration and ES module compatibility
+- ✅ **Production Ready**: Full end-to-end payment flow working
+
+See [Payment System Fixes Documentation](docs/PAYMENT_SYSTEM_FIXES.md) for detailed technical information.
+
+### Testing the Payment System
+1. Visit [https://presale.fitactive.open-sky.org](https://presale.fitactive.open-sky.org)
+2. Fill out the payment form
+3. Use NETOPIA test cards:
+   - **Success**: `4111111111111111` (any CVV, future date)
+   - **Failure**: `4000000000000002` (any CVV, future date)
 
 ## 📝 License
 

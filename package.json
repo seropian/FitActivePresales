@@ -11,7 +11,7 @@
     "build": "cd frontend && npm run build",
     "install:all": "npm install && cd server && npm install && cd ../frontend && npm install",
     "clean": "cd frontend && npm run clean",
-    "test:payment": "node test-payment-flow.js"
+    "test:payment": "node tests/test-payment-flow.js"
   },
   "keywords": [
     "fitness",
