@@ -112,11 +112,17 @@ Comprehensive documentation is available in the [`docs/`](docs/) directory:
 ### Setup & Configuration
 - **[Environment Configuration](docs/ENVIRONMENT_CONFIG.md)** - Detailed guide for setting up development, test, and production environments
 - **[Quick Reference](docs/QUICK_REFERENCE.md)** - Quick commands and common tasks reference
+- **[Documentation Index](docs/README.md)** - Complete documentation overview and navigation
 
 ### Deployment & Operations
-- **[Deployment Guide](docs/DEPLOYMENT_GUIDE.md)** - Complete deployment instructions for production
+- **[Deployment Guide](docs/DEPLOYMENT_GUIDE.md)** - Complete deployment instructions for all environments (dev, test, production)
 - **[Deployment Status](docs/DEPLOYMENT_STATUS.md)** - Current production status and verification steps
 - **[Security Checklist](docs/SECURITY_CHECKLIST.md)** - Security considerations and best practices
+
+### Payment Integration
+- **[Payment System Fixes](docs/PAYMENT_SYSTEM_FIXES.md)** - Recent payment system improvements and technical details
+- **[NETOPIA Integration Guide](docs/netopia-Integration.md)** - NETOPIA payment gateway integration documentation
+- **[MobilPay Help](docs/Help-mobilPay.pdf)** - Official MobilPay/NETOPIA documentation (PDF)
 
 ### Development Resources
 - **[Icon Sizing Guide](docs/ICON_SIZING_GUIDE.md)** - Guidelines for icons and visual assets
