@@ -73,6 +73,34 @@ function formatPrice(value) {
 export function LandingPage({ spotsLeft, discount, ctaText }) {
   const [openFaqItems, setOpenFaqItems] = useState(new Set());
 
+  // Calculate progress from July 1st (0%) to September 27th (100%)
+  const calculateProgress = () => {
+    const startDate = new Date('2025-07-01');
+    const endDate = new Date('2025-09-27');
+    const currentDate = new Date();
+
+    // Calculate total days between start and end date
+    const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
+
+    // Calculate days passed since start date
+    const daysPassed = Math.max(0, Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)));
+
+    // Calculate days left until end date
+    const daysLeft = Math.max(0, Math.ceil((endDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24)));
+
+    // Calculate progress percentage (0% on July 1st, 100% on September 27th)
+    const progressPercentage = Math.max(0, Math.min(100, (daysPassed / totalDays) * 100));
+
+    return {
+      daysLeft: daysLeft,
+      daysPassed: daysPassed,
+      progressPercentage: Math.round(progressPercentage),
+      spotsLeft: Math.max(1, 100 - Math.round(progressPercentage * 0.99)) // Spots decrease as progress increases
+    };
+  };
+
+  const progressData = calculateProgress();
+
   const toggleFaqItem = (index) => {
     const newOpenItems = new Set(openFaqItems);
     if (newOpenItems.has(index)) {
@@ -122,116 +150,101 @@ export function LandingPage({ spotsLeft, discount, ctaText }) {
 
                 {/* Right Column - Price Card */}
               {/* Promo Card - New Design */}
-              <div className="p-6 sm:p-8 rounded-3xl bg-[var(--fa-ral-9011)] shadow-xl relative overflow-hidden">
+              <div className="p-6 sm:p-8 rounded-3xl bg-black shadow-xl relative overflow-hidden">
+                {/* Title Section */}
+                <div className="mb-6">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-4 leading-tight">
+                    FitActive București Vitan
+                  </h2>
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white mb-4 leading-tight">
+                    Fitness 24/7 la doar
+                  </h3>
+                </div>
+
                 {/* Price Section */}
-                <div className="mb-5">
-                  {/* Mobile Layout */}
-                  <div className="block sm:hidden">
-                    {/* Doar primii 100! text above price - Mobile */}
-                    <div className="mb-2">
-                      <span className="text-sm font-bold" style={{ color: 'var(--fa-orange)' }}>
-                        Doar primii 100!
-                      </span>
-                    </div>
-                    {/* Price line - larger to fill card width */}
-                    <div className="flex items-baseline gap-1 mb-2 whitespace-nowrap">
-                      <span className="text-4xl sm:text-5xl font-black text-white">{formatPrice(SALE_PRICE)}</span>
-                      <span className="text-lg sm:text-xl font-semibold text-white">lei</span>
-                      <span className="text-base sm:text-lg font-semibold text-white/60 line-through decoration-white/70 decoration-2">
-                        {formatPrice(FULL_PRICE)} lei
-                      </span>
-                    </div>
-                    {/* Savings badge on separate line */}
-                    <div className="mb-3">
-                      <span className="inline-block px-3 py-1 rounded-lg bg-green-600 text-white font-bold text-sm whitespace-nowrap">
-                        Economisești {Math.round((1 - SALE_PRICE / FULL_PRICE) * 100)}%
-                      </span>
+                <div className="mb-6">
+                  {/* Main Price */}
+                  <div className="mb-3">
+                    <div className="flex items-baseline gap-2 mb-2">
+                      <span className="text-4xl sm:text-5xl lg:text-6xl font-black" style={{ color: 'var(--fa-orange)' }}>99,90</span>
+                      <span className="text-xl sm:text-2xl font-black" style={{ color: 'var(--fa-orange)' }}>lei/lună</span>
                     </div>
                   </div>
 
-                  {/* Desktop Layout */}
-                  <div className="hidden sm:block">
-                    {/* Doar primii 100! text above price - Desktop */}
-                    <div className="mb-2">
-                      <span className="text-base font-bold" style={{ color: 'var(--fa-orange)' }}>
-                        Doar primii 100!
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap items-baseline gap-3 mb-2">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-5xl lg:text-6xl font-black text-white">{formatPrice(SALE_PRICE)}</span>
-                      <span className="text-xl font-semibold text-white">lei</span>
-                    </div>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-xl font-semibold text-white/60 line-through decoration-white/70 decoration-2">
-                        {formatPrice(FULL_PRICE)} lei
-                      </span>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <span className="px-3 py-1 rounded-lg bg-green-600 text-white font-bold text-sm whitespace-nowrap">
-                        Economisești {Math.round((1 - SALE_PRICE / FULL_PRICE) * 100)}%
-                      </span>
-                    </div>
-                    </div>
+                  {/* Discount Badge */}
+                  <div className="mb-4">
+                    <span className="text-base sm:text-lg text-white/80">
+                      (53% reducere — doar pentru primii 100)
+                    </span>
+                  </div>
+
+                  {/* Normal Price */}
+                  <div className="mb-4">
+                    <span className="text-base text-white/70">
+                      Preţul întreg: <span className="line-through">{formatPrice(FULL_PRICE)} lei/an</span>.
+                    </span>
+                  </div>
+
+                  {/* Discounted Price */}
+                  <div className="mb-4">
+                    <span className="text-base text-orange-500 font-bold">
+                      Preţul redus: {formatPrice(SALE_PRICE)} lei/an.
+                    </span>
+                  </div>
+
+                  {/* Membership fee */}
+                  <div className="mb-4">
+                    <span className="text-sm text-white/70">
+                      *Preţul include taxa de membru de 250 de lei, plătită o data in viață.
+                    </span>
                   </div>
                 </div>
 
-                {/* Features Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
-                  {/* First Column */}
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-lg bg-[var(--fa-ral-2011)]/10 text-[var(--fa-ral-2011)] flex items-center justify-center flex-shrink-0">
-                        <Clock className="w-3 h-3" />
-                      </div>
-                      <span className="text-white font-medium text-sm">Acces nelimitat 24h / 7/7</span>
+                {/* Features List */}
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 mt-0.5 flex-shrink-0">
+                      <CheckCircle2 className="w-5 h-5" style={{ color: 'var(--fa-orange)' }} />
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-lg bg-[var(--fa-ral-2011)]/10 text-[var(--fa-ral-2011)] flex items-center justify-center flex-shrink-0">
-                        <Users className="w-3 h-3" />
-                      </div>
-                      <span className="text-white font-medium text-sm">1-la-1 cu antrenori dedicați</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-lg bg-[var(--fa-ral-2011)]/10 text-[var(--fa-ral-2011)] flex items-center justify-center flex-shrink-0">
-                        <Sun className="w-3 h-3" />
-                      </div>
-                      <span className="text-white font-medium text-sm">Solar & masaj incluse</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-lg bg-[var(--fa-ral-2011)]/10 text-[var(--fa-ral-2011)] flex items-center justify-center flex-shrink-0">
-                        <CheckCircle2 className="w-3 h-3" />
-                      </div>
-                      <span className="text-white font-medium text-sm">Preț blocat - 12 luni - 99, 90 lei</span>
-                    </div>
+                    <span className="text-white font-medium text-base leading-relaxed">
+                      Antrenează-te oricând — sala e deschisă non-stop, 24/7.
+                    </span>
                   </div>
 
-                  {/* Second Column */}
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-lg bg-[var(--fa-ral-2011)]/10 text-[var(--fa-ral-2011)] flex items-center justify-center flex-shrink-0">
-                        <Calendar className="w-3 h-3" />
-                      </div>
-                      <span className="text-white font-medium text-sm">Clase variate</span>
+                  <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 mt-0.5 flex-shrink-0">
+                      <CheckCircle2 className="w-5 h-5" style={{ color: 'var(--fa-orange)' }} />
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-lg bg-[var(--fa-ral-2011)]/10 text-[var(--fa-ral-2011)] flex items-center justify-center flex-shrink-0">
-                        <Zap className="w-3 h-3" />
-                      </div>
-                      <span className="text-white font-medium text-sm">Aparate moderne</span>
+                    <span className="text-white font-medium text-base leading-relaxed">
+                      Recuperează ca un profesionist — masaj și solar nelimitat incluse.
+                    </span>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 mt-0.5 flex-shrink-0">
+                      <CheckCircle2 className="w-5 h-5" style={{ color: 'var(--fa-orange)' }} />
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-lg bg-[var(--fa-ral-2011)]/10 text-[var(--fa-ral-2011)] flex items-center justify-center flex-shrink-0">
-                        <CheckCircle2 className="w-3 h-3" />
-                      </div>
-                      <span className="text-white font-medium text-sm">Sala modernă, igienizată</span>
+                    <span className="text-white font-medium text-base leading-relaxed">
+                      Fără plictiseală — clase de grup, cardio, forță pentru toate nivelurile.
+                    </span>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 mt-0.5 flex-shrink-0">
+                      <CheckCircle2 className="w-5 h-5" style={{ color: 'var(--fa-orange)' }} />
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-lg bg-[var(--fa-ral-2011)]/10 text-[var(--fa-ral-2011)] flex items-center justify-center flex-shrink-0">
-                        <Coffee className="w-3 h-3" />
-                      </div>
-                      <span className="text-white font-medium text-sm">Spațiu de relaxare generos</span>
+                    <span className="text-white font-medium text-base leading-relaxed">
+                      Nu te atinge inflația si nici modificarile de TVA — blochezi acum <strong>99,90 lei/lună</strong> pentru 12 luni.
+                    </span>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 mt-0.5 flex-shrink-0">
+                      <CheckCircle2 className="w-5 h-5" style={{ color: 'var(--fa-orange)' }} />
                     </div>
+                    <span className="text-white font-medium text-base leading-relaxed">
+                      Bonus presale: Pro-Pack — analiză corporală + plan personalizat (doar acum).
+                    </span>
                   </div>
                 </div>
 
@@ -253,11 +266,11 @@ export function LandingPage({ spotsLeft, discount, ctaText }) {
                 {/* Progress Bar */}
                 <div className="mt-2">
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-white/70">87 abonamente rămase</span>
-                    <span className="text-white/70">71% rezervate</span>
+                    <span className="text-white/70">{progressData.spotsLeft} abonamente rămase</span>
+                    <span className="text-white/70">{progressData.progressPercentage}% rezervate</span>
                   </div>
                   <div className="relative h-1.5 bg-white/20 rounded-full overflow-hidden">
-                    <div className="absolute left-0 top-0 h-full w-[71%] bg-[var(--fa-orange)] rounded-full"></div>
+                    <div className="absolute left-0 top-0 h-full bg-[var(--fa-orange)] rounded-full" style={{ width: `${progressData.progressPercentage}%` }}></div>
                   </div>
                 </div>
               </div>
@@ -587,11 +600,11 @@ export function LandingPage({ spotsLeft, discount, ctaText }) {
                 {/* Progress Section */}
                 <div className="mb-4">
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-white/70">87 abonamente rămase</span>
-                    <span className="text-white/70">71% rezervate</span>
+                    <span className="text-white/70">{progressData.spotsLeft} abonamente rămase</span>
+                    <span className="text-white/70">{progressData.progressPercentage}% rezervate</span>
                   </div>
                   <div className="relative h-2 bg-white/20 rounded-full overflow-hidden">
-                    <div className="absolute left-0 top-0 h-full w-[71%] bg-[var(--fa-orange)] rounded-full"></div>
+                    <div className="absolute left-0 top-0 h-full bg-[var(--fa-orange)] rounded-full" style={{ width: `${progressData.progressPercentage}%` }}></div>
                   </div>
                 </div>
               </div>
