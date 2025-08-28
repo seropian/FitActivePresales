@@ -192,20 +192,20 @@ Update `NETOPIA_NOTIFY_URL` in `.env` with the ngrok URL.
 
 ### Deployment Scripts
 
-The project includes automated deployment scripts for managing different environments:
+The project includes a unified deployment script for managing all environments:
 
-#### 1. General Deployment Script (`scripts/deploy.sh`)
-Flexible script for managing all environments (dev/test/prod):
+#### Deployment Script (`scripts/deploy.sh`)
+Single script for managing all environments (dev/test/prod) with enhanced features:
 
 **Usage:**
 ```bash
-./scripts/deploy.sh [ENVIRONMENT] [ACTION]
+./scripts/deploy.sh [ENVIRONMENT] [ACTION] [OPTIONS]
 ```
 
 **Environments:**
 - `dev` - Development environment (port 3001)
 - `test` - Test environment (port 3002)
-- `prod` - Production environment (port 3000)
+- `prod` - Production environment (port 3003)
 
 **Actions:**
 - `start` - Start the application
@@ -214,65 +214,92 @@ Flexible script for managing all environments (dev/test/prod):
 - `status` - Show application status
 - `logs` - Show application logs
 - `build` - Build frontend and start backend
+- `deploy` - Full deployment (git pull, build, restart)
+- `setup` - Initial environment setup
+- `cleanup` - Clean build artifacts and logs
+
+**Options:**
+- `--no-build` - Skip frontend build step
+- `--no-git` - Skip git pull step
+- `--force` - Force restart even if already running
+- `--logs=N` - Show N lines of logs
 
 **Examples:**
 ```bash
 # Start development environment
 ./scripts/deploy.sh dev start
 
-# Restart production environment
-./scripts/deploy.sh prod restart
+# Full production deployment
+./scripts/deploy.sh prod deploy
 
-# Show test environment logs
-./scripts/deploy.sh test logs
+# Show test environment logs with more lines
+./scripts/deploy.sh test logs --logs=100
 
 # Build and start production
 ./scripts/deploy.sh prod build
 
-# Check status of development environment
-./scripts/deploy.sh dev status
+# Check status of all environments
+./scripts/deploy.sh status
 ```
 
-#### 2. Production Deployment Script (`scripts/deploy-production.sh`)
-Comprehensive production deployment script that:
-- Pulls latest code from git
-- Installs dependencies
-- Builds frontend
-- Sets up environment files
-- Manages PM2 processes
-- Verifies deployment
+#### NPM Scripts (Recommended)
+For easier access, use the predefined npm scripts:
 
-**Usage:**
+**Development:**
 ```bash
-# Must be run as 'sero' user
-./scripts/deploy-production.sh
+npm run start:dev        # Start development environment
+npm run deploy:dev       # Deploy development environment
+npm run logs:dev         # View development logs
+```
+
+**Test:**
+```bash
+npm run start:test       # Start test environment
+npm run deploy:test      # Deploy test environment
+npm run logs:test        # View test logs
+```
+
+**Production:**
+```bash
+npm run start:prod       # Start production environment
+npm run deploy:prod      # Deploy production environment
+npm run logs:prod        # View production logs
+```
+
+**Global Commands:**
+```bash
+npm run status           # Show status of all environments
 ```
 
 #### Environment Configuration
 Each environment runs on different ports and uses different databases:
 - **Development**: Port 3001, `data.sqlite`
 - **Test**: Port 3002, `data-test.sqlite`
-- **Production**: Port 3000, `data-prod.sqlite`
+- **Production**: Port 3003, `data-prod.sqlite`
 
 #### Quick Start Commands
 
 **For Development:**
 ```bash
-./scripts/deploy.sh dev build    # Build and start dev
-./scripts/deploy.sh dev logs     # Monitor dev logs
+npm run deploy:dev               # Deploy development environment
+npm run logs:dev                 # Monitor dev logs
+# OR using script directly
+./scripts/deploy.sh dev build
 ```
 
 **For Testing:**
 ```bash
-./scripts/deploy.sh test start   # Start test environment
-./scripts/deploy.sh test status  # Check test status
+npm run start:test               # Start test environment
+npm run status                   # Check status of all environments
+# OR using script directly
+./scripts/deploy.sh test start
 ```
 
 **For Production:**
 ```bash
-./scripts/deploy-production.sh   # Full production deployment
-# OR
-./scripts/deploy.sh prod restart # Quick production restart
+npm run deploy:prod              # Full production deployment
+# OR using script directly with options
+./scripts/deploy.sh prod deploy --no-git
 ```
 
 ### Production Deployment (Ubuntu Server)
