@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Clock, ChevronRight } from "lucide-react";
 
+interface CountdownBannerProps {
+  targetDate?: Date;
+  onCtaClick?: () => void;
+}
+
 // Countdown Banner Component
-export function CountdownBanner() {
+export function CountdownBanner({ targetDate, onCtaClick }: CountdownBannerProps = {}) {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -11,11 +16,12 @@ export function CountdownBanner() {
   });
 
   useEffect(() => {
-    const targetDate = new Date('2025-09-27T23:59:59');
+    const defaultTargetDate = new Date('2025-09-27T23:59:59');
+    const finalTargetDate = targetDate || defaultTargetDate;
 
     const updateCountdown = () => {
       const now = new Date();
-      const difference = targetDate.getTime() - now.getTime();
+      const difference = finalTargetDate.getTime() - now.getTime();
 
       if (difference > 0) {
         setTimeLeft({
@@ -33,9 +39,14 @@ export function CountdownBanner() {
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [targetDate]);
 
-  const handleCtaClick = (e) => {
+  const handleCtaClick = (e: React.MouseEvent) => {
+    // Call the provided onCtaClick handler if it exists
+    if (onCtaClick) {
+      onCtaClick(e);
+    }
+
     // Scroll to top when navigating to checkout page
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -55,7 +66,7 @@ export function CountdownBanner() {
               alt="FitActive Logo"
               className="h-16 w-auto object-contain"
               onError={(e) => {
-                e.target.style.display = 'none';
+                (e.target as HTMLImageElement).style.display = 'none';
               }}
             />
           </div>
@@ -109,7 +120,7 @@ export function CountdownBanner() {
               alt="FitActive Logo"
               className="h-24 lg:h-24 xl:h-26 w-auto object-contain"
               onError={(e) => {
-                e.target.style.display = 'none';
+                (e.target as HTMLImageElement).style.display = 'none';
               }}
             />
           </div>

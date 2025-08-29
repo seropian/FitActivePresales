@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import type { ThankYouPageProps, Invoice } from "../types/components";
 
 const POLLING_INTERVAL = 3000; // 3 seconds
 
 /**
  * Thank You page component - displays order status and handles payment confirmation
  */
-export function ThankYouPage({ orderID }) {
+export function ThankYouPage({ orderID }: ThankYouPageProps) {
   const [status, setStatus] = useState("pending");
-  const [invoice, setInvoice] = useState(null);
+  const [invoice, setInvoice] = useState<Invoice | null>(null);
 
   // Fallback to sessionStorage if orderID is not provided
   const safeOrderID = orderID ||
@@ -17,7 +18,7 @@ export function ThankYouPage({ orderID }) {
   useEffect(() => {
     if (!safeOrderID) return;
 
-    let timeoutId;
+    let timeoutId: NodeJS.Timeout;
 
     const checkOrderStatus = async () => {
       try {

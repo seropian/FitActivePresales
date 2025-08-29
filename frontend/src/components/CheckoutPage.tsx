@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CheckCircle2, CreditCard, Lock } from "lucide-react";
 
 // Pricing configuration
@@ -11,7 +11,12 @@ const PRICING_CONFIG = {
 // Calculate discount percentage
 const DISCOUNT_PERCENTAGE = Math.round(((PRICING_CONFIG.FULL_PRICE - PRICING_CONFIG.SALE_PRICE) / PRICING_CONFIG.FULL_PRICE) * 100);
 
-function formatPrice(value) {
+interface CheckoutPageProps {
+  discount: number;
+  ctaText: string;
+}
+
+function formatPrice(value: number): string {
   try {
     return value.toLocaleString("ro-RO", {
       minimumFractionDigits: 2,
@@ -22,7 +27,7 @@ function formatPrice(value) {
   }
 }
 
-export function CheckoutPage({ discount, ctaText }) {
+export function CheckoutPage({ discount: _discount, ctaText: _ctaText }: CheckoutPageProps) {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -37,7 +42,7 @@ export function CheckoutPage({ discount, ctaText }) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -45,7 +50,7 @@ export function CheckoutPage({ discount, ctaText }) {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -105,7 +110,7 @@ export function CheckoutPage({ discount, ctaText }) {
           alt="FitActive Logo"
           className="h-12 mx-auto mb-8"
           onError={(e) => {
-            e.target.style.display = 'none';
+            (e.target as HTMLImageElement).style.display = 'none';
           }}
         />
 
@@ -170,7 +175,7 @@ export function CheckoutPage({ discount, ctaText }) {
                       alt={`All Inclusive ${i}`}
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        e.target.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23374151"/><text x="50" y="50" text-anchor="middle" dy=".3em" fill="%23fff" font-size="12">${i}</text></svg>`;
+                        (e.target as HTMLImageElement).src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23374151"/><text x="50" y="50" text-anchor="middle" dy=".3em" fill="%23fff" font-size="12">${i}</text></svg>`;
                       }}
                     />
                   </div>
@@ -208,7 +213,7 @@ export function CheckoutPage({ discount, ctaText }) {
                       alt={`Pro Pack ${i}`}
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        e.target.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23374151"/><text x="50" y="50" text-anchor="middle" dy=".3em" fill="%23fff" font-size="12">${i}</text></svg>`;
+                        (e.target as HTMLImageElement).src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23374151"/><text x="50" y="50" text-anchor="middle" dy=".3em" fill="%23fff" font-size="12">${i}</text></svg>`;
                       }}
                     />
                   </div>

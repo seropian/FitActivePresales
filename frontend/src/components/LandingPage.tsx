@@ -1,27 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   CheckCircle2,
   Star,
   ChevronRight,
   ChevronDown,
-  Clock,
-  Clock3,
   Users,
   Stethoscope,
-  Zap,
-  Calendar,
-  Sun,
-  Coffee,
-  Smile,
-  Battery,
   Lock,
   LockOpen,
-  PersonStanding,
 } from "lucide-react";
-import { PriceDisplay } from "./PriceDisplay";
 import { CountdownBanner } from "./CountdownBanner";
-import { ImageGrid, FeedbackImageGrid } from "./ImageGrid";
+import { FeedbackImageGrid } from "./ImageGrid";
 import { ImageCarousel } from "./ImageCarousel";
 import { CTAButton } from "./CTAButton";
 
@@ -62,7 +52,13 @@ const proPackImages = [
 const FULL_PRICE = 3098.80;
 const SALE_PRICE = 1448.80;
 
-function formatPrice(value) {
+interface LandingPageProps {
+  spotsLeft: number;
+  discount: number;
+  ctaText: string;
+}
+
+function formatPrice(value: number): string {
   try {
     return value.toLocaleString("ro-RO", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   } catch {
@@ -70,7 +66,7 @@ function formatPrice(value) {
   }
 }
 
-export function LandingPage({ spotsLeft, discount, ctaText }) {
+export function LandingPage({ spotsLeft: _spotsLeft, discount: _discount, ctaText: _ctaText }: LandingPageProps) {
   const [openFaqItems, setOpenFaqItems] = useState(new Set());
 
   // Calculate progress from July 1st (0%) to September 27th (100%)
@@ -101,7 +97,7 @@ export function LandingPage({ spotsLeft, discount, ctaText }) {
 
   const progressData = calculateProgress();
 
-  const toggleFaqItem = (index) => {
+  const toggleFaqItem = (index: number) => {
     const newOpenItems = new Set(openFaqItems);
     if (newOpenItems.has(index)) {
       newOpenItems.delete(index);
@@ -466,7 +462,7 @@ export function LandingPage({ spotsLeft, discount, ctaText }) {
 
           <div className="mt-8 text-center">
             <CTAButton size="large">
-              {ctaText}
+              {_ctaText}
             </CTAButton>
           </div>
         </div>
@@ -490,7 +486,7 @@ export function LandingPage({ spotsLeft, discount, ctaText }) {
           </div>
           <div className="mt-6 text-center">
             <CTAButton size="large">
-              {ctaText}
+              {_ctaText}
             </CTAButton>
           </div>
         </div>
@@ -515,7 +511,7 @@ export function LandingPage({ spotsLeft, discount, ctaText }) {
           </div>
           <div className="mt-6 text-center">
             <CTAButton size="large">
-              {ctaText}
+              {_ctaText}
             </CTAButton>
           </div>
         </div>

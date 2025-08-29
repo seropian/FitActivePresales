@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
+import helmet from "helmet";
 import { initDB } from "./database/db.js";
 import { APP_CONFIG, NETOPIA_CONFIG } from "./config/environment.js";
 import netopiRoutes from "./routes/netopia.js";
@@ -7,6 +8,19 @@ import orderRoutes from "./routes/orders.js";
 import type { HealthCheckResponse, AuthenticatedRequest } from "./types/index.js";
 
 const app = express();
+
+// Security middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+  crossOriginEmbedderPolicy: false, // Allow embedding for payment forms
+}));
 
 // Middleware
 app.use(express.json({
@@ -32,7 +46,11 @@ app.use((error: any, _req: Request, res: Response, next: NextFunction) => {
 
 app.use(cors({
   origin: APP_CONFIG.BASE_URL,
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 
 // Routes
@@ -94,6 +112,10 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-startServer();
+// Export app for testing
+export { app };
 
-
+// Only start server if this file is run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  startServer();
+}

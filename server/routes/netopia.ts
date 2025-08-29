@@ -1,10 +1,10 @@
 import express, { Request, Response, NextFunction } from "express";
-import { netopiaService } from "../services/netopiaService.js";
-import { upsertOrder } from "../database/db.js";
-import { handleApprovedPayment } from "../utils/paymentHandler.js";
-import { logger } from "../utils/logger.js";
-import { validateOrder, validateBilling, validateCompany } from "../utils/validation.js";
-import type { PaymentRequest, PaymentResponse, AuthenticatedRequest } from "../types/index.js";
+import { netopiaService } from "@/services/netopiaService";
+import { upsertOrder } from "@/database/db";
+import { handleApprovedPayment } from "@/utils/paymentHandler";
+import { logger } from "@/utils/logger";
+import { validateOrder, validateBilling, validateCompany } from "@/utils/validation";
+import type { PaymentRequest, PaymentResponse, AuthenticatedRequest } from "@/types";
 
 const router = express.Router();
 

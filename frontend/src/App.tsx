@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { LandingPage } from "./components/LandingPage";
 import { CheckoutPage } from "./components/CheckoutPage";
 import { ThankYouPage } from "./components/ThankYouPage";
@@ -26,7 +26,7 @@ function formatPrice(value: number): string {
   }
 }
 
-export default function FitActivePresaleApp(): JSX.Element {
+export default function FitActivePresaleApp(): React.JSX.Element {
   const { page, params } = useHashRoute();
   const [spotsLeft] = useState<number>(100);
 

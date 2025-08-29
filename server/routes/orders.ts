@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
-import { getOrder } from "../database/db.js";
-import type { ApiResponse } from "../types/index.js";
+import { getOrder } from "@/database/db";
+import type { ApiResponse } from "@/types";
 
 const router = express.Router();
 

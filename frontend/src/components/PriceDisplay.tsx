@@ -1,6 +1,6 @@
-import React from "react";
+import type { PriceDisplayProps, PriceSummaryProps } from "../types/components";
 
-function formatPrice(value) {
+function formatPrice(value: number): string {
   try {
     return value.toLocaleString("ro-RO", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   } catch {
@@ -15,19 +15,18 @@ export function PriceDisplay({
   size = "large",
   alignment = "center",
   showSavings = true,
-  showDiscount = true,
-  layout = "stacked"
-}) {
+  showDiscount = true
+}: PriceDisplayProps) {
   const discount = Math.round((1 - salePrice / fullPrice) * 100);
   const savings = fullPrice - salePrice;
 
-  const sizeClasses = {
+  const sizeClasses: Record<string, string> = {
     small: "text-2xl sm:text-3xl",
     medium: "text-3xl sm:text-4xl lg:text-5xl",
     large: "text-5xl sm:text-6xl lg:text-7xl"
   };
 
-  const alignmentClasses = {
+  const alignmentClasses: Record<string, string> = {
     left: "justify-start text-left",
     center: "justify-center text-center",
     right: "justify-end text-right"
@@ -70,7 +69,7 @@ export function PriceDisplay({
 }
 
 // Price Summary Component for Checkout
-export function PriceSummary({ salePrice, fullPrice }) {
+export function PriceSummary({ salePrice, fullPrice }: PriceSummaryProps) {
   const discount = Math.round((1 - salePrice / fullPrice) * 100);
   const savings = fullPrice - salePrice;
 

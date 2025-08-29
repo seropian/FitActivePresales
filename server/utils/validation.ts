@@ -46,6 +46,11 @@ export function validateOrder(order: any): ValidationResult {
     errors.push({ field: 'currency', message: 'Currency must be a string' });
   }
 
+  // Validate currency is RON for Romanian payments
+  if (order.currency && order.currency !== 'RON') {
+    errors.push({ field: 'currency', message: 'Currency must be RON for Romanian payments' });
+  }
+
   return {
     isValid: errors.length === 0,
     errors
@@ -79,8 +84,8 @@ export function validateBilling(billing: any): ValidationResult {
     errors.push({ field: 'city', message: 'City is required' });
   }
 
-  if (billing.phone && !isValidPhone(billing.phone)) {
-    errors.push({ field: 'phone', message: 'Invalid phone number format' });
+  if (!billing.phone || !isValidPhone(billing.phone)) {
+    errors.push({ field: 'phone', message: 'Valid phone number is required' });
   }
 
   return {

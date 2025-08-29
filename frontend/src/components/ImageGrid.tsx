@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import type { ImageGridProps, FeedbackImageGridProps } from "../types/components";
 
 // Grid cu lightbox pentru galerie (aspect ratio fix)
-export function ImageGrid({ images }) {
+export function ImageGrid({ images }: ImageGridProps) {
   const [open, setOpen] = useState(false);
   const [src, setSrc] = useState("");
   if (!images?.length) return null;
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-        {images.map((img, i) => (
+        {images.map((img: string, i: number) => (
           <button
             type="button"
             key={i}
@@ -62,14 +63,14 @@ export function ImageGrid({ images }) {
 }
 
 // Grid cu lightbox pentru feedback (imagini la dimensiune naturală)
-export function FeedbackImageGrid({ images }) {
+export function FeedbackImageGrid({ images }: FeedbackImageGridProps) {
   const [open, setOpen] = useState(false);
   const [src, setSrc] = useState("");
   if (!images?.length) return null;
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-        {images.map((img, i) => (
+        {images.map((img: string, i: number) => (
           <button
             type="button"
             key={i}

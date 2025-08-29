@@ -1,5 +1,5 @@
 import nodemailer, { Transporter } from "nodemailer";
-import { SMTP_CONFIG } from "../config/environment.js";
+import { SMTP_CONFIG } from "@/config/environment";
 // EmailOptions and EmailResponse types available if needed
 
 interface InvoiceEmailOptions {

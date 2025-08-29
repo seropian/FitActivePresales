@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { ImageCarouselProps } from "../types/components";
 
-export function ImageCarousel({ images, className = "" }) {
+export function ImageCarousel({ images, className = "" }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [isImageLoading, setIsImageLoading] = useState(false);
+  const [isImageLoading] = useState(false);
 
   if (!images?.length) return null;
 
   // Preload images for smoother transitions
   useEffect(() => {
-    images.forEach((src) => {
+    images.forEach((src: string) => {
       const img = new Image();
       img.src = src;
     });
@@ -38,10 +39,7 @@ export function ImageCarousel({ images, className = "" }) {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  const goToImage = (index) => {
-    if (isImageLoading || index === currentIndex) return;
-    setCurrentIndex(index);
-  };
+
 
   const openLightbox = () => {
     setIsLightboxOpen(true);
