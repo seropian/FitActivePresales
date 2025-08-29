@@ -62,7 +62,7 @@ app.get("/health", (_req: Request, res: Response) => {
   const healthResponse: HealthCheckResponse = {
     status: "ok",
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || "development",
+    environment: process.env.NODE_ENV || "dev",
     uptime: process.uptime(),
     memory: process.memoryUsage()
   };
@@ -92,7 +92,7 @@ async function startServer(): Promise<void> {
     const PORT = Number(APP_CONFIG.PORT);
     app.listen(PORT, () => {
       console.log(`🚀 FitActive API server running on port ${PORT}`);
-      console.log(`📊 Environment: ${process.env.NODE_ENV || "development"}`);
+      console.log(`📊 Environment: ${process.env.NODE_ENV || "dev"}`);
       console.log(`🔗 Health check: http://localhost:${PORT}/health`);
     });
   } catch (error) {

@@ -8,11 +8,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load environment-specific configuration
-const NODE_ENV: string = process.env.NODE_ENV || "development";
+const NODE_ENV: string = process.env.NODE_ENV || "dev";
 
 // Load the appropriate .env file based on NODE_ENV
 let envFile = ".env";
-if (NODE_ENV === "production") {
+if (NODE_ENV === "prod") {
   envFile = ".env.prod";
 } else if (NODE_ENV === "test") {
   envFile = ".env.test";
@@ -38,9 +38,9 @@ export const env = (key: string, defaultValue: string = ""): string => process.e
 /**
  * Environment detection helpers
  */
-export const isDevelopment = (): boolean => NODE_ENV === "development";
+export const isDevelopment = (): boolean => NODE_ENV === "dev";
 export const isTest = (): boolean => NODE_ENV === "test";
-export const isProduction = (): boolean => NODE_ENV === "production";
+export const isProduction = (): boolean => NODE_ENV === "prod";
 
 /**
  * Get current environment
