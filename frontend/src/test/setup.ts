@@ -29,3 +29,17 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }))
+
+// Mock fetch for API calls
+global.fetch = vi.fn().mockImplementation((url: string) => {
+  if (url.includes('/api/order/status')) {
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({
+        status: 'pending',
+        orderID: 'TEST-123'
+      })
+    })
+  }
+  return Promise.reject(new Error(`Unmocked fetch call to ${url}`))
+})

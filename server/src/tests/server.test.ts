@@ -1,7 +1,23 @@
 import request from 'supertest';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { app } from '../../server.js';
-import { initDB } from '../../database/db.js';
+import { initDB } from '../repositories/db.js';
+
+// Mock the NETOPIA service to prevent real API calls
+vi.mock('../services/netopiaService', () => ({
+  netopiaService: {
+    startPayment: vi.fn().mockResolvedValue({
+      customerAction: {
+        url: 'https://secure-sandbox.netopia-payments.com/payment/test-redirect-url'
+      }
+    }),
+    verifyIPN: vi.fn().mockResolvedValue({
+      success: true,
+      status: 'approved',
+      orderID: 'TEST-123'
+    })
+  }
+}));
 
 describe('FitActive Server API', () => {
   let server: any;
@@ -226,12 +242,12 @@ describe('FitActive Server API', () => {
   describe('Rate Limiting', () => {
     it('should allow reasonable number of requests', async () => {
       // Make multiple requests to test rate limiting
-      const promises = Array(5).fill(null).map(() => 
+      const promises = Array(5).fill(null).map(() =>
         request(app).get('/health')
       );
 
       const responses = await Promise.all(promises);
-      
+
       // All should succeed under normal rate limits
       responses.forEach(response => {
         expect(response.status).toBe(200);

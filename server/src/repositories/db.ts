@@ -17,7 +17,7 @@ export async function initDB(): Promise<void> {
       filename: dbPath,
       driver: sqlite3.Database
     });
-    
+
     await db.exec(`
       CREATE TABLE IF NOT EXISTS orders(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,7 +34,7 @@ export async function initDB(): Promise<void> {
         updatedAt TEXT
       );
     `);
-    
+
     console.log("Database initialized successfully");
   } catch (error) {
     console.error("Failed to initialize database:", error);
@@ -58,7 +58,7 @@ export function getDB(): Database {
 export async function upsertOrder(orderData: Partial<OrderRecord>): Promise<void> {
   const database = getDB();
   const now = new Date().toISOString();
-  
+
   try {
     await database.run(
       `INSERT INTO orders(orderID, amount, currency, status, billing, company, createdAt, updatedAt)
@@ -74,7 +74,7 @@ export async function upsertOrder(orderData: Partial<OrderRecord>): Promise<void
     );
   } catch (error) {
     await database.run(
-      `UPDATE orders SET amount=?, currency=?, status=?, billing=?, company=?, updatedAt=? 
+      `UPDATE orders SET amount=?, currency=?, status=?, billing=?, company=?, updatedAt=?
        WHERE orderID=?`,
       orderData.amount,
       orderData.currency || "RON",
@@ -115,4 +115,15 @@ export async function updateOrderInvoice(orderID: string, invoiceData: {
     now,
     orderID
   );
+}
+
+/**
+ * Close the database connection
+ */
+export async function closeDB(): Promise<void> {
+  if (db) {
+    await db.close();
+    db = null;
+    console.log('📊 Database connection closed');
+  }
 }

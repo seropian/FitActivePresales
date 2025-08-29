@@ -1,4 +1,4 @@
-import { getOrder, upsertOrder, updateOrderInvoice } from "../database/db.js";
+import { getOrder, upsertOrder, updateOrderInvoice } from "../repositories/db.js";
 import { smartBillService } from "../services/smartbillService.js";
 import { emailService } from "../services/emailService.js";
 

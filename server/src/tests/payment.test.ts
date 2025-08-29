@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { netopiaService } from '../../services/netopiaService.js';
-import { validateOrder, validateBilling, validateCompany } from '../../utils/validation.js';
+import { netopiaService } from '../services/netopiaService.js';
+import { validateOrder, validateBilling, validateCompany } from '../lib/validation.js';
 
 // Mock the netopiaService for testing
 vi.mock('../../services/netopiaService.js');

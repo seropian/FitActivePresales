@@ -21,7 +21,7 @@ if (NODE_ENV === "production") {
 }
 
 // Construct the full path to the .env file (relative to server directory)
-const envPath = path.resolve(__dirname, "..", envFile);
+const envPath = path.resolve(__dirname, "..", "..", envFile);
 
 // Load the environment file
 dotenv.config({ path: envPath });

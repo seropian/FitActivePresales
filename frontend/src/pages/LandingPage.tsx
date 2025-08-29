@@ -10,10 +10,10 @@ import {
   Lock,
   LockOpen,
 } from "lucide-react";
-import { CountdownBanner } from "./CountdownBanner";
-import { FeedbackImageGrid } from "./ImageGrid";
-import { ImageCarousel } from "./ImageCarousel";
-import { CTAButton } from "./CTAButton";
+import { CountdownBanner } from "../components/ui/CountdownBanner";
+import { FeedbackImageGrid } from "../components/ui/ImageGrid";
+import { ImageCarousel } from "../components/ui/ImageCarousel";
+import { CTAButton } from "../components/ui/CTAButton";
 
 // Image paths
 const feedbackImages = [

@@ -22,13 +22,14 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, '.'),
-      '@/config': path.resolve(__dirname, './config'),
-      '@/database': path.resolve(__dirname, './database'),
-      '@/routes': path.resolve(__dirname, './routes'),
-      '@/services': path.resolve(__dirname, './services'),
-      '@/utils': path.resolve(__dirname, './utils'),
-      '@/types': path.resolve(__dirname, './types')
+      '@': path.resolve(__dirname, './src'),
+      '@/config': path.resolve(__dirname, './src/config'),
+      '@/database': path.resolve(__dirname, './src/repositories'),
+      '@/repositories': path.resolve(__dirname, './src/repositories'),
+      '@/routes': path.resolve(__dirname, './src/controllers'),
+      '@/services': path.resolve(__dirname, './src/services'),
+      '@/utils': path.resolve(__dirname, './src/lib'),
+      '@/types': path.resolve(__dirname, './src/types')
     }
   }
 });
