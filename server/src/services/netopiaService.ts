@@ -2,8 +2,8 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 import fs from "fs";
 import https from "https";
 import { Ipn } from "netopia-payment2";
-import { NETOPIA_CONFIG, APP_CONFIG } from "@/config/environment";
-import type { NetopiaPaymentData } from "@/types";
+import { NETOPIA_CONFIG, APP_CONFIG } from "../config/environment.js";
+import type { NetopiaPaymentData } from "../types/index.js";
 
 /**
  * NETOPIA payment service - TypeScript version

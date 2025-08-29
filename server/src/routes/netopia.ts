@@ -1,3 +1,3 @@
 // Re-export from the actual controller implementation
-import router from "../src/controllers/orders.js";
+import router from "../controllers/netopia.js";
 export default router;

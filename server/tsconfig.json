@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "moduleResolution": "Node16",
+    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "allowImportingTsExtensions": false,
@@ -11,39 +11,39 @@
     "noEmit": false,
     "outDir": "./dist",
     "rootDir": "./",
-    
+
     /* Strict Type-Checking Options */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    
+
     /* Additional Checks */
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-    
+
     /* Module Resolution Options */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
       "@/config/*": ["./config/*"],
       "@/database/*": ["./database/*"],
-      "@/routes/*": ["./routes/*"],
+      "@/routes/*": ["./src/routes/*"],
       "@/services/*": ["./services/*"],
       "@/utils/*": ["./utils/*"],
       "@/types/*": ["./types/*"]
     },
-    
+
     /* Source Map Options */
     "sourceMap": true,
     "inlineSourceMap": false,
     "inlineSources": false,
-    
+
     /* Experimental Options */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    
+
     /* Advanced Options */
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true

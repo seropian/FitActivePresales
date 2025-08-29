@@ -1,6 +1,6 @@
 import axios from "axios";
-import { SMARTBILL_CONFIG } from "@/config/environment";
-import type { OrderRecord } from "@/types";
+import { SMARTBILL_CONFIG } from "../config/environment.js";
+import type { OrderRecord } from "../types/index.js";
 
 interface CreateInvoiceParams {
   orderData: OrderRecord;

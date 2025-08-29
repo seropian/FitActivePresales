@@ -1,11 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
-import { initDB } from "./database/db.js";
-import { APP_CONFIG, NETOPIA_CONFIG } from "./config/environment.js";
-import netopiRoutes from "./routes/netopia.js";
-import orderRoutes from "./routes/orders.js";
-import type { HealthCheckResponse, AuthenticatedRequest } from "./types/index.js";
+import { initDB } from "./src/repositories/db.js";
+import { APP_CONFIG, NETOPIA_CONFIG } from "./src/config/environment.js";
+import netopiRoutes from "./src/routes/netopia.js";
+import orderRoutes from "./src/routes/orders.js";
+import type { HealthCheckResponse, AuthenticatedRequest } from "./src/types/index.js";
 
 const app = express();
 
