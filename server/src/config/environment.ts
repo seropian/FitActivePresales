@@ -62,9 +62,12 @@ export const validateEnvironment = (requiredVars = []) => {
 // NETOPIA Configuration
 export const NETOPIA_CONFIG = {
   API_BASE: env("NETOPIA_API_BASE", "https://secure.sandbox.netopia-payments.com"),
+  SANDBOX: env("NETOPIA_SANDBOX", "true") === "true",
   API_KEY: env("NETOPIA_API_KEY"),
   POS_SIGNATURE: env("NETOPIA_POS_SIGNATURE"),
   PUBLIC_KEY_PATH: env("NETOPIA_PUBLIC_KEY_PATH", "./server/netopia_public.pem"),
+  RETURN_URL: env("NETOPIA_RETURN_URL", "http://localhost:5173/#/thankyou"),
+  CONFIRM_URL: env("NETOPIA_CONFIRM_URL", "http://localhost:3001/api/netopia/ipn"),
   NOTIFY_URL: env("NETOPIA_NOTIFY_URL", "http://localhost:3001/api/netopia/ipn"),
   REDIRECT_PATH: env("NETOPIA_REDIRECT_PATH", "#thank-you"),
 };
@@ -72,6 +75,7 @@ export const NETOPIA_CONFIG = {
 // SmartBill Configuration
 export const SMARTBILL_CONFIG = {
   API_BASE: env("SMARTBILL_API_BASE", "https://api.smartbill.ro"),
+  SANDBOX: env("SMARTBILL_SANDBOX", "true") === "true",
   EMAIL: env("SMARTBILL_EMAIL"),
   TOKEN: env("SMARTBILL_TOKEN"),
   VATCODE: env("SMARTBILL_VATCODE"),
@@ -80,9 +84,13 @@ export const SMARTBILL_CONFIG = {
 
 // Application Configuration
 export const APP_CONFIG = {
+  NAME: env("APP_NAME", "FitActive Presales"),
   BASE_URL: env("APP_BASE_URL", "http://localhost:5173"),
   PORT: env("PORT", "3001"),
   NODE_ENV: NODE_ENV,
+  CORS_ORIGIN: env("CORS_ORIGIN", "http://localhost:5173"),
+  FORCE_HTTPS: env("FORCE_HTTPS", "false") === "true",
+  TRUST_PROXY: env("TRUST_PROXY", "false") === "true",
 } as const;
 
 // Database Configuration
@@ -107,5 +115,13 @@ export const SMTP_CONFIG = {
   PORT: Number(env("SMTP_PORT", "587")),
   USER: env("SMTP_USER"),
   PASS: env("SMTP_PASS"),
-  FROM: env("MAIL_FROM", "no-reply@fitactive.ro"),
+  FROM: env("SMTP_FROM", "no-reply@fitactive.ro"),
+  FROM_NAME: env("SMTP_FROM_NAME", "FitActive"),
+  MAIL_FROM: env("MAIL_FROM", "no-reply@fitactive.ro"),
+} as const;
+
+// Logging Configuration
+export const LOG_CONFIG = {
+  LEVEL: env("LOG_LEVEL", "info"),
+  FILE: env("LOG_FILE", "./logs/app.log"),
 } as const;

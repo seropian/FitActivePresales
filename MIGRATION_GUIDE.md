@@ -87,14 +87,17 @@ server/src/
 **After:**
 ```
 config/
-├── environments/ (environment-specific configs)
-│   ├── .env.example
-│   ├── .env.development
-│   ├── .env.test
-│   └── .env.production
+├── environments/ (environment templates)
+│   └── .env.example
 ├── nginx/ (server configurations)
 ├── pm2/ (process manager configs)
 └── README.md
+
+server/
+├── .env.example (environment template)
+├── .env (development environment)
+├── .env.test (test environment)
+└── .env.prod (production environment)
 ```
 
 ### 5. Documentation Structure
@@ -167,7 +170,7 @@ cp .env.example .env
 
 **After:**
 ```bash
-cp config/environments/.env.development server/.env
+cp server/.env.example server/.env
 ```
 
 ## Migration Steps
@@ -186,8 +189,8 @@ Review and update import statements in your code to match the new structure. Use
 
 ### 3. Update Environment Configuration
 ```bash
-# Copy appropriate environment file
-cp config/environments/.env.development server/.env
+# Copy environment template
+cp server/.env.example server/.env
 
 # Edit with your credentials
 nano server/.env

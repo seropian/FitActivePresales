@@ -26,7 +26,7 @@ npm run install:all
 
 ```bash
 # Copy environment template
-cp config/environments/.env.development server/.env
+cp server/.env.example server/.env
 
 # Edit with your credentials
 nano server/.env

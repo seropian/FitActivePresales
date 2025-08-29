@@ -50,7 +50,7 @@ This project supports three environments: **Development**, **Test**, and **Produ
 
 ```bash
 # Copy environment template for development
-cp config/environments/.env.development server/.env
+cp server/.env.example server/.env
 ```
 
 Edit `server/.env` with your development credentials:
@@ -59,10 +59,10 @@ Edit `server/.env` with your development credentials:
 - SMTP configuration
 
 **Environment Files:**
-- `config/environments/.env.development` - Development environment
-- `config/environments/.env.test` - Test environment
-- `config/environments/.env.production` - Production environment
-- `config/environments/.env.example` - Template with all options
+- `server/.env` - Development environment (copy from .env.example)
+- `server/.env.test` - Test environment
+- `server/.env.prod` - Production environment
+- `server/.env.example` - Template with all options
 
 **Quick Environment Switching:**
 ```bash
@@ -76,7 +76,7 @@ npm run env:switch test
 npm run env:switch production
 ```
 
-📖 **See [Configuration Documentation](config/README.md) for detailed setup guide.**
+📖 **See [Configuration Documentation](server/.env.example) for detailed setup guide.**
 
 ### 3. Start Development Servers
 

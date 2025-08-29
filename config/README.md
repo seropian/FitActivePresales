@@ -6,11 +6,8 @@ This directory contains all configuration files for the FitActive Presales appli
 
 ```
 config/
-├── environments/          # Environment-specific configurations
-│   ├── .env.example      # Template for environment variables
-│   ├── .env.development  # Development environment
-│   ├── .env.test         # Test environment
-│   └── .env.production   # Production environment
+├── environments/          # Environment configuration templates
+│   └── .env.example      # Template for environment variables
 ├── nginx/                # Nginx server configurations
 │   ├── nginx-production.conf
 │   └── nginx-https-only.conf
@@ -18,12 +15,18 @@ config/
     └── ecosystem.config.cjs
 ```
 
+**Note:** Environment-specific configuration files are now located in the `server/` directory:
+- `server/.env.example` - Template with all configuration options
+- `server/.env` - Development environment (copy from .env.example)
+- `server/.env.test` - Test environment
+- `server/.env.prod` - Production environment
+
 ## Environment Configuration
 
 ### Setup
-1. Copy the appropriate environment file to your server directory:
+1. Copy the environment template to your server directory:
    ```bash
-   cp config/environments/.env.development server/.env
+   cp server/.env.example server/.env
    ```
 
 2. Edit the copied file with your actual credentials and settings.
