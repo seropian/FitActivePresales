@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run linting and formatting checks before commit
+echo "🔍 Running pre-commit checks..."
+
+# Check if we're in the right directory
+if [ ! -f "package.json" ]; then
+  echo "❌ Not in project root directory"
+  exit 1
+fi
+
+# Run frontend checks
+echo "📱 Checking frontend..."
+cd frontend
+npm run lint --silent
+if [ $? -ne 0 ]; then
+  echo "❌ Frontend linting failed"
+  exit 1
+fi
+
+# Run backend checks
+echo "🖥️  Checking backend..."
+cd ../server
+npm run lint --silent
+if [ $? -ne 0 ]; then
+  echo "❌ Backend linting failed"
+  exit 1
+fi
+
+# Run tests
+echo "🧪 Running tests..."
+npm run test --silent
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed"
+  exit 1
+fi
+
+cd ..
+echo "✅ All pre-commit checks passed!"

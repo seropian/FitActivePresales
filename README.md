@@ -50,33 +50,33 @@ This project supports three environments: **Development**, **Test**, and **Produ
 
 ```bash
 # Copy environment template for development
-cd ../server
-cp .env.example .env
+cp config/environments/.env.development server/.env
 ```
 
-Edit `.env` with your development credentials:
+Edit `server/.env` with your development credentials:
 - NETOPIA API keys and POS signature
 - SmartBill credentials
 - SMTP configuration
 
 **Environment Files:**
-- `.env` - Development environment (default)
-- `.env.test` - Test environment (already created)
-- `.env.prod` - Production environment (already created)
+- `config/environments/.env.development` - Development environment
+- `config/environments/.env.test` - Test environment
+- `config/environments/.env.production` - Production environment
+- `config/environments/.env.example` - Template with all options
 
 **Quick Environment Switching:**
 ```bash
 # Check environment status
-node scripts/env-switch.js
+npm run env:switch
 
 # Switch to test environment
-node scripts/env-switch.js test
+npm run env:switch test
 
 # Switch to production environment
-node scripts/env-switch.js production
+npm run env:switch production
 ```
 
-📖 **See [ENVIRONMENT_CONFIG.md](docs/ENVIRONMENT_CONFIG.md) for detailed configuration guide.**
+📖 **See [Configuration Documentation](config/README.md) for detailed setup guide.**
 
 ### 3. Start Development Servers
 
@@ -163,34 +163,67 @@ Update `NETOPIA_NOTIFY_URL` in `.env` with the ngrok URL.
 ## 📁 Project Structure
 
 ```
-├── config/                   # Configuration files
-│   ├── ecosystem.config.cjs  # PM2 configuration
-│   └── nginx-*.conf         # Nginx configurations
+├── config/                   # Configuration management
+│   ├── environments/        # Environment-specific configurations
+│   │   ├── .env.example     # Environment template
+│   │   ├── .env.development # Development settings
+│   │   ├── .env.test        # Test settings
+│   │   └── .env.production  # Production settings
+│   ├── nginx/               # Nginx server configurations
+│   ├── pm2/                 # PM2 process manager configs
+│   └── README.md            # Configuration documentation
+├── docs/                     # Comprehensive documentation
+│   ├── development/         # Development guides
+│   │   ├── GETTING_STARTED.md
+│   │   ├── TESTING.md
+│   │   └── QUICK_REFERENCE.md
+│   ├── deployment/          # Deployment documentation
+│   ├── api/                 # API documentation
+│   ├── guides/              # User and integration guides
+│   └── assets/              # Documentation assets
 ├── scripts/                  # Utility scripts
-│   ├── deploy.sh            # Multi-environment deployment script
-│   ├── deploy-production.sh # Production deployment script
-│   ├── env-switch.js        # Environment switching script
-│   ├── nginx-setup.sh       # Nginx setup script
-│   └── verify-setup.sh      # Setup verification script
-├── tests/                    # Testing suite
-│   ├── test-payment.js      # Development payment flow tests
-│   ├── test-payment-flow.js # Comprehensive payment testing
-│   ├── test-payment-public.js # Production server tests
-│   ├── test-frontend-flow.js # Frontend integration tests
-│   └── README.md            # Testing documentation
-├── frontend/                 # React frontend
+│   ├── deploy.sh            # Multi-environment deployment
+│   ├── env-switch.ts        # Environment switching
+│   └── *.sh                 # Various utility scripts
+├── tests/                    # Organized testing suite
+│   ├── integration/         # Integration tests
+│   ├── e2e/                 # End-to-end tests
+│   ├── utils/               # Test utilities
+│   └── fixtures/            # Test data
+├── frontend/                 # React frontend (reorganized)
 │   ├── src/
-│   │   ├── components/      # React components
-│   │   ├── utils/           # Utility functions
-│   │   └── App.jsx          # Main app component
+│   │   ├── pages/           # Page components
+│   │   ├── components/      # Reusable components
+│   │   │   ├── ui/          # UI components
+│   │   │   └── layout/      # Layout components
+│   │   ├── hooks/           # Custom React hooks
+│   │   ├── contexts/        # React contexts
+│   │   ├── config/          # Frontend configuration
+│   │   ├── lib/             # Utility functions
+│   │   ├── assets/          # Static assets
+│   │   └── types/           # TypeScript types
+│   ├── .eslintrc.json       # ESLint configuration
+│   ├── .prettierrc          # Prettier configuration
 │   └── package.json
-├── server/                   # Express backend
-│   ├── config/              # Server configuration files
-│   ├── database/            # Database operations
-│   ├── routes/              # API routes
-│   ├── services/            # External services
-│   ├── utils/               # Utility functions
-│   └── server.js            # Main server file
+├── server/                   # Express backend (MVC structure)
+│   ├── src/
+│   │   ├── controllers/     # Route handlers
+│   │   ├── middleware/      # Express middleware
+│   │   ├── services/        # Business logic
+│   │   ├── repositories/    # Data access layer
+│   │   ├── models/          # Data models
+│   │   ├── lib/             # Utility functions
+│   │   ├── config/          # Server configuration
+│   │   ├── types/           # TypeScript types
+│   │   └── tests/           # Unit tests
+│   ├── .eslintrc.json       # ESLint configuration
+│   └── server.ts            # Main server file
+├── .husky/                   # Git hooks
+├── .vscode/                  # VS Code configuration
+├── .nvmrc                    # Node.js version
+├── .editorconfig             # Editor configuration
+├── LICENSE                   # License file
+├── MIGRATION_GUIDE.md        # Migration documentation
 └── README.md
 ```
 

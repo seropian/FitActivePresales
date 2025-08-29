@@ -4,13 +4,27 @@
   "description": "FitActive presales application with payment processing",
   "type": "module",
   "private": true,
+  "homepage": "https://presale.fitactive.open-sky.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seropian/FitActivePresales.git"
+  },
+  "bugs": {
+    "url": "https://github.com/seropian/FitActivePresales/issues"
+  },
   "scripts": {
+    "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('Please use npm instead of yarn')\"",
+    "postinstall": "npm run install:all",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:frontend\"",
     "dev:server": "cd server && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
-    "build": "cd frontend && npm run build",
+    "build": "npm run build:frontend && npm run build:server",
+    "build:frontend": "cd frontend && npm run build",
+    "build:server": "cd server && npm run build",
     "install:all": "npm install && cd server && npm install && cd ../frontend && npm install",
-    "clean": "cd frontend && npm run clean",
+    "clean": "npm run clean:frontend && npm run clean:server",
+    "clean:frontend": "cd frontend && npm run clean",
+    "clean:server": "cd server && npm run clean",
     "test:payment": "npx tsx tests/test-payment-flow.ts",
     "test:payment-dev": "npx tsx tests/test-payment.ts",
     "test:payment-prod": "npx tsx tests/test-payment-public.ts",
